@@ -87,12 +87,12 @@ export const HeroScene = ({ active, reducedMotion, theme, onNavigate }: SceneCom
       </div>
 
       {/* ── Main content row ── */}
-      <div className="relative flex flex-1 min-h-0 flex-col-reverse lg:flex-row">
+      <div className="relative z-0 flex flex-1 min-h-0 flex-col-reverse lg:flex-row">
 
         {/* ── TEXT COLUMN ── */}
         <div
           ref={parallaxTextRef}
-          className="relative z-10 flex flex-col justify-center gap-4 px-6 pt-8 pb-4 lg:w-[54%] lg:px-14 lg:pt-12 lg:pb-6"
+          className="relative z-10 flex flex-col justify-center gap-2 px-6 pt-2 pb-16 sm:gap-4 sm:pt-8 sm:pb-4 lg:w-[54%] lg:px-14 lg:pt-12 lg:pb-6"
           style={{ willChange: 'transform' }}
         >
           {/* New stronger slogan */}
@@ -183,7 +183,7 @@ export const HeroScene = ({ active, reducedMotion, theme, onNavigate }: SceneCom
 
         {/* ── HERO COLUMN ── */}
         <div
-          className="relative flex shrink-0 items-center justify-center lg:w-[46%] px-8 py-6 lg:px-12"
+          className="relative flex shrink-0 items-center justify-center lg:w-[46%] px-8 pt-4 pb-2 sm:pt-16 sm:pb-6 lg:px-12 lg:py-6"
           style={{ minHeight: '260px' }}
         >
           {!reducedMotion && (

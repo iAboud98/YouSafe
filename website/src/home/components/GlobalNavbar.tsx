@@ -43,12 +43,30 @@ export const GlobalNavbar = ({ items, activeIndex, onNavigate, onTalk, accent }:
       <style>{talkButtonStyles}</style>
       <header className="fixed inset-x-0 top-0 z-50 px-4 pt-3 sm:px-8">
       <div className="mx-auto flex w-full max-w-[1680px] items-center gap-4">
+        {/* ── Mobile-only: standalone hamburger ── */}
+        <div className="flex items-center gap-3 sm:hidden">
+          <button
+            type="button"
+            className="inline-flex h-10 w-10 items-center justify-center transition"
+            style={{
+              background: `${accent}14`,
+              border: `1px solid ${accentMuted}`,
+              borderRadius: '10px',
+              color: accent,
+            }}
+            aria-label={open ? 'إغلاق القائمة' : 'فتح القائمة'}
+            onClick={() => setOpen((v) => !v)}
+          >
+            {open ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+          </button>
+        </div>
+
         {/* ── Logo — outside the navbar bar ── */}
         <button
           type="button"
           onClick={() => onNavigate(0)}
           aria-label="الانتقال إلى الرئيسية"
-          className="group relative flex shrink-0 items-center justify-center transition-transform duration-150 hover:scale-105"
+          className="group relative hidden shrink-0 items-center justify-center transition-transform duration-150 hover:scale-105 sm:flex"
           style={{ background: 'transparent', border: 'none', height: '100px', width: '100px' }}
         >
           <img
@@ -58,9 +76,9 @@ export const GlobalNavbar = ({ items, activeIndex, onNavigate, onTalk, accent }:
           />
         </button>
 
-        {/* ── Navbar bar ── */}
+        {/* ── Navbar bar (hidden on mobile) ── */}
         <div
-          className="flex flex-1 items-center justify-between gap-3 px-4 py-2.5"
+          className="hidden flex-1 items-center justify-between gap-3 px-4 py-2.5 sm:flex"
           style={{
             background: 'rgba(255, 255, 255, 0.12)',
             backdropFilter: 'blur(20px) saturate(1.6)',
@@ -169,10 +187,10 @@ export const GlobalNavbar = ({ items, activeIndex, onNavigate, onTalk, accent }:
             ابدأ المغامرة
           </button>
 
-          {/* Mobile hamburger */}
+          {/* Hamburger for tablet/medium screens (mobile has standalone one) */}
           <button
             type="button"
-            className="inline-flex h-10 w-10 items-center justify-center transition xl:hidden"
+            className="hidden h-10 w-10 items-center justify-center transition sm:inline-flex xl:hidden"
             style={{
               background: `${accent}14`,
               border: `1px solid ${accentMuted}`,
@@ -250,7 +268,7 @@ export const GlobalNavbar = ({ items, activeIndex, onNavigate, onTalk, accent }:
                   textShadow: '0 1px 1px rgba(255,255,255,0.6)',
                 }}
               >
-                ▶ احكي انو منيحة
+                ▶ احكي مع يوسف
               </button>
             )}
           </div>
