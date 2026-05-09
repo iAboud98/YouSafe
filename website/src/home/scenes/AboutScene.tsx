@@ -309,35 +309,35 @@ export const AboutScene = ({ active, reducedMotion, theme, onNavigate }: SceneCo
         >
           {/* Character name bar */}
           <div
-            className="px-4 py-2.5 border-b sm:px-5 sm:py-4"
+            className="px-3 py-1.5 border-b sm:px-5 sm:py-4"
             style={{ borderColor: `${NEON_BLUE}22`, background: `${NEON_BLUE}08` }}
           >
-            <div className="flex flex-wrap items-baseline justify-end gap-3">
-              <h3 className="font-display text-2xl font-bold sm:text-5xl" style={{ color: '#f0f8ff' }}>{current.nameAr}</h3>
-              <span className="font-pixel text-[6px] tracking-widest" style={{ color: '#ffffff', opacity: 0.9 }} lang="en">
+            <div className="flex flex-wrap items-baseline justify-end gap-2 sm:gap-3">
+              <h3 className="font-display text-xl font-bold sm:text-5xl" style={{ color: '#f0f8ff' }}>{current.nameAr}</h3>
+              <span className="font-pixel text-[5px] tracking-widest sm:text-[6px]" style={{ color: '#ffffff', opacity: 0.9 }} lang="en">
                 {current.nameEn}
               </span>
             </div>
-            <p className="mt-1 font-cartoon text-base font-semibold text-right" style={{ color: '#ffffff' }}>{current.role}</p>
-            <p className="mt-0.5 font-cartoon text-sm leading-relaxed text-right" style={{ color: '#ffffff', opacity: 0.92 }}>{current.keywords}</p>
+            <p className="font-cartoon text-xs font-semibold text-right sm:mt-1 sm:text-base" style={{ color: '#ffffff' }}>{current.role}</p>
+            <p className="font-cartoon text-[11px] leading-snug text-right sm:mt-0.5 sm:text-sm sm:leading-relaxed" style={{ color: '#ffffff', opacity: 0.92 }}>{current.keywords}</p>
           </div>
 
           {/* Stats section */}
-          <div className="px-4 py-2.5 sm:px-5 sm:py-4">
-            <div className="mb-3 flex flex-col items-end gap-1 pb-2 text-right">
-              <span className="font-cartoon text-sm font-extrabold" style={{ color: '#ffffff' }}>سمات الشخصية</span>
-              <span className="max-w-[18rem] text-right font-cartoon text-xs font-bold leading-snug" style={{ color: '#ffffff' }}>
+          <div className="px-3 py-1.5 sm:px-5 sm:py-4">
+            <div className="mb-1.5 flex flex-col items-end gap-0.5 pb-1 text-right sm:mb-3 sm:gap-1 sm:pb-2">
+              <span className="font-cartoon text-xs font-extrabold sm:text-sm" style={{ color: '#ffffff' }}>سمات الشخصية</span>
+              <span className="max-w-[18rem] text-right font-cartoon text-[10px] font-bold leading-snug sm:text-xs" style={{ color: '#ffffff' }}>
                 {current.perk}
               </span>
             </div>
-            <div className="space-y-2 sm:space-y-3">
+            <div className="space-y-1 sm:space-y-3">
               {current.stats.map((s) => (
                 <div key={s.key}>
-                  <div className="mb-1 flex justify-between font-cartoon text-sm font-bold">
+                  <div className="mb-0.5 flex justify-between font-cartoon text-xs font-bold sm:mb-1 sm:text-sm">
                     <span style={{ color: '#ffffff' }}>{s.key}</span>
                     <span style={{ color: NEON_BLUE, textShadow: `0 0 8px ${NEON_BLUE}` }}>{s.value}%</span>
                   </div>
-                  <div className="h-3 border" style={{ borderRadius: '2px', borderColor: `${NEON_BLUE}22`, background: 'rgba(0,20,40,0.6)' }}>
+                  <div className="h-2 border sm:h-3" style={{ borderRadius: '2px', borderColor: `${NEON_BLUE}22`, background: 'rgba(0,20,40,0.6)' }}>
                     <div
                       className="about-stat-bar-fill h-full"
                       style={{
