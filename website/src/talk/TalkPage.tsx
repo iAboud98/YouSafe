@@ -37,28 +37,34 @@ const isSafariBrowser = (): boolean => {
   return /Safari/.test(ua) && !/(Chrome|Chromium|CriOS|Edg|OPR)/.test(ua);
 };
 
-function MascotStage({ reducedMotion, speaking }: { reducedMotion: boolean; speaking: boolean }) {
+function MascotStage({ speaking }: { reducedMotion: boolean; speaking: boolean }) {
   const { accent, glow } = TALK_SCENE_THEME;
-  const safariFallback = isSafariBrowser();
-  const shouldUseVideo = !safariFallback;
+  const isSafari = isSafariBrowser();
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [apngSrc, setApngSrc] = useState('/mascot.png');
 
   useEffect(() => {
-    const v = videoRef.current;
-    if (!v) return;
-    v.muted = true;
-    if (!shouldUseVideo) {
-      v.pause();
-      v.currentTime = 0;
-      return;
-    }
-    if (!speaking) {
-      v.pause();
-      v.currentTime = 0;
+    if (!isSafari) {
+      const v = videoRef.current;
+      if (!v) return;
+      v.muted = true;
+      if (!speaking) {
+        v.pause();
+        v.currentTime = 0;
+      } else {
+        void v.play().catch(() => {});
+      }
     } else {
-      void v.play().catch(() => {});
+      if (speaking) {
+        setApngSrc(`/Gazal_talking.apng?t=${Date.now()}`);
+      } else {
+        setApngSrc('/mascot.png');
+      }
     }
-  }, [shouldUseVideo, speaking]);
+  }, [isSafari, speaking]);
+
+  const mascotClass =
+    'absolute left-1/2 top-1/2 z-10 h-[86%] w-[86%] -translate-x-1/2 -translate-y-1/2 object-contain drop-shadow-[8px_12px_0_rgba(0,0,0,0.82)] float-medium';
 
   return (
     <div
@@ -80,10 +86,10 @@ function MascotStage({ reducedMotion, speaking }: { reducedMotion: boolean; spea
         className="absolute inset-[12%] rounded-full border-4 border-dashed opacity-40 spin-slower-reverse"
         style={{ borderColor: accent }}
       />
-      {shouldUseVideo ? (
+      {!isSafari ? (
         <video
           ref={videoRef}
-          className="absolute left-1/2 top-1/2 z-10 h-[86%] w-[86%] -translate-x-1/2 -translate-y-1/2 object-contain drop-shadow-[8px_12px_0_rgba(0,0,0,0.82)] float-medium"
+          className={mascotClass}
           loop
           muted
           playsInline
@@ -95,9 +101,10 @@ function MascotStage({ reducedMotion, speaking }: { reducedMotion: boolean; spea
         </video>
       ) : (
         <img
-          src="/Gazal_talking.apng"
+          key={apngSrc}
+          src={apngSrc}
           alt="بطل غزال يوسف — متحرك"
-          className="absolute left-1/2 top-1/2 z-10 h-[86%] w-[86%] -translate-x-1/2 -translate-y-1/2 object-contain drop-shadow-[8px_12px_0_rgba(0,0,0,0.82)] float-medium"
+          className={mascotClass}
           draggable={false}
         />
       )}
