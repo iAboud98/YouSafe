@@ -42,34 +42,36 @@ export const GlobalNavbar = ({ items, activeIndex, onNavigate, onTalk, accent }:
     <>
       <style>{talkButtonStyles}</style>
       <header className="fixed inset-x-0 top-0 z-50 px-4 pt-3 sm:px-8">
-      <div
-        className="mx-auto flex w-full max-w-[1680px] items-center justify-between gap-3 px-4 py-2.5"
-        style={{
-          background: 'rgba(255, 255, 255, 0.17)',
-          backdropFilter: 'blur(20px) saturate(160%)',
-          WebkitBackdropFilter: 'blur(20px) saturate(160%)',
-          border: `1px solid ${accentMuted}`,
-          borderRadius: '12px',
-          boxShadow: `0 6px 22px ${accentSoft}, inset 0 1px 0 rgba(0, 0, 0, 0.5)`,
-        }}
-      >
-        {/* ── Logo + nav ── */}
-        <div className="flex items-center gap-4">
-          {/* Logo */}
-          <button
-            type="button"
-            onClick={() => onNavigate(0)}
-            aria-label="الانتقال إلى الرئيسية"
-            className="group relative flex h-13 w-13i shrink-0 items-center justify-center transition-transform duration-150 hover:scale-105"
-            style={{ background: 'transparent', border: 'none' }}
-          >
-            <img
-              src="/New_Logo.png"
-              alt="شعار YouSafe"
-              className="h-full w-full object-contain"
-            />
-          </button>
+      <div className="mx-auto flex w-full max-w-[1680px] items-center gap-4">
+        {/* ── Logo — outside the navbar bar ── */}
+        <button
+          type="button"
+          onClick={() => onNavigate(0)}
+          aria-label="الانتقال إلى الرئيسية"
+          className="group relative flex shrink-0 items-center justify-center transition-transform duration-150 hover:scale-105"
+          style={{ background: 'transparent', border: 'none', height: '100px', width: '100px' }}
+        >
+          <img
+            src="/New_Logo.png"
+            alt="شعار YouSafe"
+            className="h-full w-full object-contain drop-shadow-[0_4px_12px_rgba(0,0,0,0.3)]"
+          />
+        </button>
 
+        {/* ── Navbar bar ── */}
+        <div
+          className="flex flex-1 items-center justify-between gap-3 px-4 py-2.5"
+          style={{
+            background: 'rgba(255, 255, 255, 0.12)',
+            backdropFilter: 'blur(20px) saturate(1.6)',
+            WebkitBackdropFilter: 'blur(20px) saturate(1.6)',
+            border: `1px solid ${accentMuted}`,
+            borderRadius: '12px',
+            boxShadow: `0 6px 22px ${accentSoft}, inset 0 1px 0 rgba(255, 255, 255, 0.08)`,
+          }}
+        >
+        {/* ── Nav links ── */}
+        <div className="flex items-center gap-4">
           {/* Desktop nav */}
           <nav className="hidden items-center gap-0.5 xl:flex">
             {items.map((item, index) => {
@@ -88,7 +90,7 @@ export const GlobalNavbar = ({ items, activeIndex, onNavigate, onTalk, accent }:
                     if (!active) (e.currentTarget as HTMLButtonElement).style.color = accent;
                   }}
                   onMouseLeave={(e) => {
-                    if (!active) (e.currentTarget as HTMLButtonElement).style.color = '#1a1a1a';
+                    if (!active) (e.currentTarget as HTMLButtonElement).style.color = '#ffffff';
                   }}
                 >
                   {item.label}
@@ -183,6 +185,7 @@ export const GlobalNavbar = ({ items, activeIndex, onNavigate, onTalk, accent }:
             {open ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
           </button>
         </div>
+      </div>
       </div>
 
       {/* ── Mobile drawer ── */}

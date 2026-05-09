@@ -1,6 +1,7 @@
 import { Bot, Cpu } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { KineticHeading } from '../components/KineticHeading';
+import { PixelScrollArrows } from '../components/PixelScrollArrows';
 import type { SceneComponentProps } from '../types';
 
 const conversation = [
@@ -9,7 +10,7 @@ const conversation = [
   { side: 'bot',  text: ' ما تخاف، انا هون ورح نحل كلشي سوا اول اشي خد نفس والحل كالآتي......' },
 ];
 
-export const AssistantScene = ({ active, reducedMotion, theme }: SceneComponentProps) => {
+export const AssistantScene = ({ active, reducedMotion, theme, onNavigate }: SceneComponentProps) => {
   const [step, setStep] = useState(0);
 
   useEffect(() => {
@@ -24,6 +25,24 @@ export const AssistantScene = ({ active, reducedMotion, theme }: SceneComponentP
 
   return (
     <div className="relative grid h-full w-full grid-cols-1 gap-8 px-6 pb-10 pt-6 sm:px-12 lg:grid-cols-[0.95fr_1.05fr] lg:px-20">
+
+      {/* Subhi peeking — behind the chatbox */}
+      <img
+        src="/subhi-peek.png"
+        alt="صبحي يطل"
+        className="pointer-events-none absolute z-[1] transition-opacity duration-100"
+        style={{
+          left: '50.5%',
+          top: '50%',
+          transform: 'translate(-50%, -50%)',
+          height: '200px',
+          width: 'auto',
+          filter: 'drop-shadow(0 8px 20px rgba(0,0,0,0.4))',
+          opacity: active ? 1 : 0,
+          transitionDelay: active ? '300ms' : '0ms',
+        }}
+        draggable={false}
+      />
 
       {/* ── Left: copy ── */}
       <div className="flex flex-col justify-center text-right">
@@ -42,7 +61,7 @@ export const AssistantScene = ({ active, reducedMotion, theme }: SceneComponentP
           </span>
         </h2>
         <p
-          className={`mt-7 max-w-xl self-end text-base leading-8 sm:text-lg font-cartoon ${active ? 'kinetic-rise' : 'opacity-0'}`}
+          className={`mt-7 text-base leading-8 sm:text-lg font-cartoon ${active ? 'kinetic-rise' : 'opacity-0'}`}
           style={{ color: '#ffffff', animationDelay: '780ms' }}
         >
           مساعد ذكي يجيب على أسئلة الطفل، يشرح المرحلة، ويوجّهه نحو القرار الآمن — بلغة عربية بسيطة ومشجّعة.
@@ -86,10 +105,10 @@ export const AssistantScene = ({ active, reducedMotion, theme }: SceneComponentP
 
         {/* CRT monitor frame */}
         <div
-          className={`relative overflow-hidden scanlines ${active ? 'kinetic-rise' : 'opacity-0'}`}
+          className={`relative z-10 overflow-hidden scanlines ${active ? 'kinetic-rise' : 'opacity-0'}`}
           dir="rtl"
           style={{
-            animationDelay: '160ms',
+            animationDelay: '0ms',
             background: 'rgba(1, 6, 14, 0.97)',
             border: `2px solid ${theme.accent}77`,
             boxShadow: `0 0 0 1px rgba(0,0,0,0.95), 4px 4px 0 rgba(0,0,0,0.7), 0 0 28px ${theme.glow}`,
@@ -218,6 +237,7 @@ export const AssistantScene = ({ active, reducedMotion, theme }: SceneComponentP
           </div>
         </div>
       </div>
+      <PixelScrollArrows accent={theme.accent} active={active} reducedMotion={reducedMotion} onClick={() => onNavigate?.('scenarios')} />
     </div>
   );
 };

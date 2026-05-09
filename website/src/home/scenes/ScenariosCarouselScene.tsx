@@ -1,6 +1,7 @@
 import { Home, MapPinned, School, TriangleAlert } from 'lucide-react';
 import type { CSSProperties } from 'react';
 import { KineticHeading } from '../components/KineticHeading';
+import { PixelScrollArrows } from '../components/PixelScrollArrows';
 import type { SceneComponentProps } from '../types';
 
 /** Marquee — Tajawal (distinct from headline Almarai/Fredoka) on striped bands */
@@ -37,7 +38,7 @@ const scenarios = [
   { title: 'السلامة من الحريق ', icon: TriangleAlert },
 ];
 
-export const ScenariosCarouselScene = ({ active, reducedMotion, theme }: SceneComponentProps) => {
+export const ScenariosCarouselScene = ({ active, reducedMotion, theme, onNavigate }: SceneComponentProps) => {
   return (
     <div className="relative grid h-full w-full grid-rows-[auto_1fr_auto] gap-8 px-6 pb-10 pt-6 sm:px-12 lg:px-20">
       <div className="text-right">
@@ -151,6 +152,7 @@ export const ScenariosCarouselScene = ({ active, reducedMotion, theme }: SceneCo
           04 SCENES
         </span>
       </div>
+      <PixelScrollArrows accent={theme.accent} active={active} reducedMotion={reducedMotion} onClick={() => onNavigate?.('start')} />
     </div>
   );
 };
