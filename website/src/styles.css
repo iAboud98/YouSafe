@@ -1188,6 +1188,151 @@
   animation: aboutWidgetPop 480ms cubic-bezier(0.34, 1.4, 0.42, 1) both;
 }
 
+/* Assistant scene phone fit */
+@media (max-width: 639px) {
+  .assistant-scene {
+    grid-template-rows: auto minmax(0, 1fr);
+    align-content: start;
+    gap: clamp(0.4rem, 1.25dvh, 0.75rem);
+    padding: clamp(0.35rem, 1.1dvh, 0.65rem) clamp(0.9rem, 4vw, 1.15rem) clamp(5.75rem, 13dvh, 7rem);
+  }
+
+  .assistant-subhi-peek {
+    display: none;
+  }
+
+  .assistant-copy {
+    justify-content: flex-start;
+    transform: translateY(-0.4rem);
+  }
+
+  .assistant-copy .kicker-label {
+    padding: 0.22rem 0.6rem;
+    font-size: 6px;
+    line-height: 1.55;
+  }
+
+  .assistant-heading {
+    margin-top: 0.5rem;
+    font-size: clamp(2.05rem, 11vw, 2.9rem) !important;
+  }
+
+  .assistant-description {
+    align-self: flex-end;
+    max-width: min(100%, 23rem);
+    margin-top: 0.65rem;
+    font-size: clamp(0.92rem, 4.2vw, 1rem);
+    line-height: 1.7;
+  }
+
+  .assistant-chat-shell {
+    min-height: 0;
+    justify-content: flex-start;
+    gap: 0.35rem;
+    transform: translateY(-0.6rem);
+  }
+
+  .assistant-chat-shell > .pointer-events-none {
+    top: -4rem;
+    width: 12rem;
+    height: 12rem;
+    opacity: 0.14;
+  }
+
+  .assistant-ai-badge > div {
+    gap: 0.4rem;
+    padding: 0.28rem 0.55rem;
+  }
+
+  .assistant-terminal {
+    display: flex;
+    min-height: 0;
+    max-height: 100%;
+    flex-direction: column;
+  }
+
+  .assistant-title-bar {
+    flex: 0 0 auto;
+    padding: 0.35rem 0.55rem;
+  }
+
+  .assistant-title-bar .h-9 {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  .assistant-chat-area {
+    min-height: 0;
+    flex: 1 1 auto;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 0.7rem;
+    scrollbar-width: none;
+  }
+
+  .assistant-chat-area::-webkit-scrollbar {
+    display: none;
+  }
+
+  .assistant-chat-area .gap-2\.5 {
+    gap: 0.4rem;
+  }
+
+  .assistant-chat-avatar {
+    width: 2.25rem;
+    height: 2.25rem;
+  }
+
+  .assistant-message {
+    max-width: min(100%, 16rem);
+    padding: 0.45rem 0.65rem;
+    font-size: clamp(0.78rem, 3.45vw, 0.9rem);
+    line-height: 1.65;
+  }
+
+  .assistant-message .font-pixel {
+    margin-bottom: 0.15rem;
+    font-size: 6px;
+  }
+
+  .assistant-terminal-prompt {
+    display: none;
+  }
+}
+
+@media (max-width: 639px) and (max-height: 740px) {
+  .assistant-scene {
+    gap: 0.3rem;
+    padding-bottom: 5.25rem;
+  }
+
+  .assistant-copy {
+    transform: translateY(-0.65rem);
+  }
+
+  .assistant-heading {
+    font-size: clamp(1.85rem, 10vw, 2.45rem) !important;
+  }
+
+  .assistant-description {
+    margin-top: 0.45rem;
+    line-height: 1.55;
+  }
+
+  .assistant-chat-shell {
+    transform: translateY(-0.9rem);
+  }
+
+  .assistant-chat-area {
+    padding: 0.55rem;
+  }
+
+  .assistant-message {
+    padding: 0.35rem 0.55rem;
+    line-height: 1.5;
+  }
+}
+
 /* ─── Pixel scroll arrows ──────────────────────────────────────────────── */
 
 @keyframes pixelScrollArrow {

@@ -24,13 +24,13 @@ export const AssistantScene = ({ active, reducedMotion, theme, onNavigate }: Sce
   }, [active, reducedMotion]);
 
   return (
-    <div className="relative grid h-full w-full grid-cols-1 gap-8 px-6 pb-10 pt-6 sm:px-12 lg:grid-cols-[0.95fr_1.05fr] lg:px-20">
+    <div className="assistant-scene relative grid h-full w-full grid-cols-1 gap-8 px-6 pb-10 pt-6 sm:px-12 lg:grid-cols-[0.95fr_1.05fr] lg:px-20">
 
       {/* Subhi peeking — behind the chatbox */}
       <img
         src="/subhi-peek.png"
         alt="صبحي يطل"
-        className="pointer-events-none absolute z-[1] transition-opacity duration-100"
+        className="assistant-subhi-peek pointer-events-none absolute z-[1] transition-opacity duration-100"
         style={{
           left: '53.3%',
           top: '50%',
@@ -45,14 +45,14 @@ export const AssistantScene = ({ active, reducedMotion, theme, onNavigate }: Sce
       />
 
       {/* ── Left: copy ── */}
-      <div className="flex flex-col justify-center text-right">
+      <div className="assistant-copy flex flex-col justify-center text-right">
         <span
           className={`kicker-label self-end ${active ? 'kinetic-fade' : 'opacity-0'}`}
           style={{ color: '#ffffff', animationDelay: '60ms' }}
         >
           {theme.kicker}
         </span>
-        <h2 className="mt-4 font-black leading-[0.95] tracking-tight font-cartoon" style={{ fontSize: 'clamp(2.6rem, 6vw, 5.2rem)' }}>
+        <h2 className="assistant-heading mt-4 font-black leading-[0.95] tracking-tight font-cartoon" style={{ fontSize: 'clamp(2.6rem, 6vw, 5.2rem)' }}>
           <span className="block comic-text-shadow-sm" style={{ color: '#f0ede8' }}>
             <KineticHeading text="مرشد هادئ" active={active} reducedMotion={reducedMotion} startDelayMs={120} />
           </span>
@@ -61,7 +61,7 @@ export const AssistantScene = ({ active, reducedMotion, theme, onNavigate }: Sce
           </span>
         </h2>
         <p
-          className={`mt-7 text-base leading-8 sm:text-lg font-cartoon ${active ? 'kinetic-rise' : 'opacity-0'}`}
+          className={`assistant-description mt-7 text-base leading-8 sm:text-lg font-cartoon ${active ? 'kinetic-rise' : 'opacity-0'}`}
           style={{ color: '#ffffff', animationDelay: '780ms' }}
         >
           مساعد ذكي يجيب على أسئلة الطفل، يشرح المرحلة، ويوجّهه نحو القرار الآمن — بلغة عربية بسيطة ومشجّعة.
@@ -69,7 +69,7 @@ export const AssistantScene = ({ active, reducedMotion, theme, onNavigate }: Sce
       </div>
 
       {/* ── Right: CRT terminal chat ── */}
-      <div className="relative flex flex-col justify-center gap-3">
+      <div className="assistant-chat-shell relative flex flex-col justify-center gap-3">
         <div
           className={`pointer-events-none absolute -top-8 right-0 h-72 w-72 rounded-full blur-3xl opacity-20 ${reducedMotion ? '' : 'blob-drift'}`}
           style={{ background: `radial-gradient(circle, ${theme.glow}, transparent 60%)` }}
@@ -77,7 +77,7 @@ export const AssistantScene = ({ active, reducedMotion, theme, onNavigate }: Sce
 
         {/* ── AI POWERED badge — above the chatbox ── */}
         <div
-          className={`flex items-center justify-end gap-2 ${active ? 'kinetic-fade' : 'opacity-0'}`}
+          className={`assistant-ai-badge flex items-center justify-end gap-2 ${active ? 'kinetic-fade' : 'opacity-0'}`}
           style={{ animationDelay: '300ms' }}
         >
           <div
@@ -105,7 +105,7 @@ export const AssistantScene = ({ active, reducedMotion, theme, onNavigate }: Sce
 
         {/* CRT monitor frame */}
         <div
-          className={`relative z-10 overflow-hidden scanlines ${active ? 'kinetic-rise' : 'opacity-0'}`}
+          className={`assistant-terminal relative z-10 overflow-hidden scanlines ${active ? 'kinetic-rise' : 'opacity-0'}`}
           dir="rtl"
           style={{
             animationDelay: '0ms',
@@ -123,7 +123,7 @@ export const AssistantScene = ({ active, reducedMotion, theme, onNavigate }: Sce
 
           {/* Terminal title bar */}
           <div
-            className="flex items-center gap-2 border-b px-3 py-2"
+            className="assistant-title-bar flex items-center gap-2 border-b px-3 py-2"
             style={{ borderColor: `${theme.accent}33`, background: `${theme.accent}08` }}
           >
             <div className={`flex items-center gap-1.5 ${active ? 'kinetic-fade' : 'opacity-0'}`} style={{ animationDelay: '260ms' }}>
@@ -156,7 +156,7 @@ export const AssistantScene = ({ active, reducedMotion, theme, onNavigate }: Sce
           />
 
           {/* Chat area */}
-          <div className="relative z-[2] space-y-3 p-4" dir="rtl">
+          <div className="assistant-chat-area relative z-[2] space-y-3 p-4" dir="rtl">
             {conversation.map((msg, i) => {
               const visible = step > i;
               const isBot = msg.side === 'bot';
@@ -168,7 +168,7 @@ export const AssistantScene = ({ active, reducedMotion, theme, onNavigate }: Sce
                 >
                   {isBot && (
                     <div
-                      className="relative h-11 w-11 shrink-0 overflow-hidden sm:h-12 sm:w-12"
+                      className="assistant-chat-avatar relative h-11 w-11 shrink-0 overflow-hidden sm:h-12 sm:w-12"
                       style={{
                         borderRadius: '3px',
                         border: `2px solid ${theme.accent}77`,
@@ -187,7 +187,7 @@ export const AssistantScene = ({ active, reducedMotion, theme, onNavigate }: Sce
                     </div>
                   )}
                   <div
-                    className="max-w-[min(100%,18rem)] px-4 py-2.5 text-sm leading-7 sm:max-w-[80%]"
+                    className="assistant-message max-w-[min(100%,18rem)] px-4 py-2.5 text-sm leading-7 sm:max-w-[80%]"
                     style={isBot
                       ? {
                           background: `${theme.accent}0d`,
@@ -229,7 +229,7 @@ export const AssistantScene = ({ active, reducedMotion, theme, onNavigate }: Sce
 
           {/* Bottom terminal prompt */}
           <div
-            className="relative z-[2] flex items-center gap-2 border-t px-3 py-2"
+            className="assistant-terminal-prompt relative z-[2] flex items-center gap-2 border-t px-3 py-2"
             style={{ borderColor: `${theme.accent}18` }}
           >
             <span className="font-pixel text-[7px]" style={{ color: '#ffffff', opacity: 0.55 }}>&gt;_</span>
