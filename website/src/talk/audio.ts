@@ -20,14 +20,19 @@ export const playBase64Audio = async (
 ): Promise<void> => {
   if (!audioBase64) return;
   const bytes = b64ToBytes(audioBase64);
-  const ac = new (window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext)();
+  const Ctx = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+  const ac = new Ctx();
+  if (ac.state === 'suspended') await ac.resume();
 
   const ab = new ArrayBuffer(bytes.length);
   new Uint8Array(ab).set(bytes);
 
   const play = (src: AudioBufferSourceNode) => {
     callbacks?.onStart?.();
-    src.onended = () => callbacks?.onEnd?.();
+    src.onended = () => {
+      callbacks?.onEnd?.();
+      void ac.close();
+    };
     src.connect(ac.destination);
     src.start();
   };
