@@ -67,6 +67,13 @@ function MascotStage({ speaking }: { reducedMotion: boolean; speaking: boolean }
         className="absolute inset-[12%] rounded-full border-4 border-dashed opacity-40 spin-slower-reverse"
         style={{ borderColor: accent }}
       />
+      <img
+        src="/mascot.png"
+        alt="بطل غزال يوسف"
+        className="absolute left-1/2 top-1/2 z-10 h-[86%] w-[86%] -translate-x-1/2 -translate-y-1/2 object-contain drop-shadow-[8px_12px_0_rgba(0,0,0,0.82)] float-medium"
+        draggable={false}
+        style={{ display: speaking ? 'none' : 'block' }}
+      />
       <video
         ref={videoRef}
         className="absolute left-1/2 top-1/2 z-10 h-[86%] w-[86%] -translate-x-1/2 -translate-y-1/2 object-contain drop-shadow-[8px_12px_0_rgba(0,0,0,0.82)] float-medium"
@@ -74,8 +81,8 @@ function MascotStage({ speaking }: { reducedMotion: boolean; speaking: boolean }
         muted
         playsInline
         preload="auto"
-        poster="/mascot.png"
         aria-label="بطل غزال يوسف — فيديو"
+        style={{ display: speaking ? 'block' : 'none' }}
       >
         <source src="/Gazal_talking.webm" type="video/webm" />
         <source src="/Gazal_talking.mp4" type="video/mp4" />
