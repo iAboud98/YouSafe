@@ -32,7 +32,7 @@ export const AssistantScene = ({ active, reducedMotion, theme, onNavigate }: Sce
         alt="صبحي يطل"
         className="pointer-events-none absolute z-[1] transition-opacity duration-100"
         style={{
-          left: '50.5%',
+          left: '53.3%',
           top: '50%',
           transform: 'translate(-50%, -50%)',
           height: '200px',
