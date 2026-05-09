@@ -1,0 +1,28 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3 -c \"import ast; [ast.parse\\(open\\(f\\).read\\(\\)\\) for f in ['main.py','app/config/settings.py','app/models/level.py','app/services/ai_service.py','app/services/level_service.py','app/controllers/level_controller.py','app/routes/level_routes.py']]\")",
+      "Bash(python -c \"from app.services.stt_service import STTSession; from app.services.tts_service import TTSSession; from app.routes.voice_routes import router; print\\('All imports OK'\\)\")",
+      "Bash(python -c \"import ast, pathlib; [ast.parse\\(p.read_text\\(\\)\\) for p in pathlib.Path\\('app'\\).rglob\\('*.py'\\)]; ast.parse\\(pathlib.Path\\('main.py'\\).read_text\\(\\)\\); print\\('syntax OK'\\)\")",
+      "Bash(npx tsc *)",
+      "Bash(echo \"exit=$?\")",
+      "Bash(npx vite *)",
+      "Bash(node node_modules/typescript/bin/tsc --noEmit)",
+      "Bash(node node_modules/vite/bin/vite.js build)",
+      "Bash(npm install *)",
+      "Bash(python3 -c \"from app.routes.talk_routes import router; from app.routes.conversation_routes import router; from app.security import enforce_ai_rate_limit; from main import app; print\\('All imports OK'\\)\")",
+      "Bash(ls /Users/aboudfialah/Desktop/YouSafe/.venv/bin/python 2>/dev/null || ls /Users/aboudfialah/Desktop/YouSafe/venv/bin/python 2>/dev/null || echo \"no venv found\")",
+      "Bash(/Users/aboudfialah/Desktop/YouSafe/.venv/bin/python -c \"from app.routes.talk_routes import router; from app.routes.conversation_routes import router; from app.security import enforce_ai_rate_limit; from main import app; print\\('All imports OK'\\)\")",
+      "Bash(/Users/aboudfialah/Desktop/YouSafe/.venv/bin/python -c \"from main import app; print\\('Backend imports OK'\\)\")",
+      "Bash(curl -s http://127.0.0.1:8000/)",
+      "Bash(kill 16253)",
+      "WebSearch",
+      "WebFetch(domain:munsit.com)",
+      "WebFetch(domain:docs.munsit.com)",
+      "mcp__Claude_in_Chrome__tabs_context_mcp",
+      "Bash(gh auth *)",
+      "Bash(git init *)",
+      "Bash(git add *)"
+    ]
+  }
+}

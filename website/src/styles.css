@@ -1,0 +1,1195 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Almarai:wght@300;400;700;800&family=Lalezar&family=Tajawal:wght@500;700;900&family=Fredoka:wght@500;600;700&family=Bangers&display=swap');
+@import 'tailwindcss';
+
+@layer base {
+  html {
+    height: 100%;
+    height: 100dvh;
+    overflow: hidden !important;
+    overscroll-behavior: none;
+    scroll-behavior: smooth;
+    scrollbar-gutter: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  html::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    display: none;
+    background: transparent;
+  }
+
+  html,
+  body,
+  #root {
+    height: 100%;
+    height: 100dvh;
+    max-height: 100dvh;
+  }
+
+  body {
+    margin: 0;
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    min-width: 320px;
+    font-family: 'Almarai', 'Fredoka', system-ui, sans-serif;
+    background: #F5F7FB;
+    color: #202544;
+    overflow: hidden !important;
+    overscroll-behavior: none;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  body::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    display: none;
+    background: transparent;
+  }
+
+  #root {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    max-height: 100%;
+    overflow: hidden !important;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  #root::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    display: none;
+    background: transparent;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  button,
+  a {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer utilities {
+  /* Hide scrollbars while keeping overflow programmatic (e.g. horizontal pan) */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
+    background: transparent;
+  }
+
+  /* ─── Font stacks ─────────────────────────────────────────────────────── */
+
+  /* Pixel / retro arcade font — Latin only, for labels, numbers, short UI text */
+  .font-pixel {
+    font-family: 'Press Start 2P', monospace;
+    letter-spacing: 0.05em;
+    line-height: 1.7;
+  }
+
+  .font-comic {
+    font-family: 'Lalezar', 'Bangers', 'Almarai', system-ui, sans-serif;
+    letter-spacing: 0.04em;
+  }
+
+  .font-cartoon {
+    font-family: 'Almarai', 'Fredoka', system-ui, sans-serif;
+  }
+
+  .font-display {
+    font-family: 'Lalezar', 'Bangers', 'Almarai', system-ui, sans-serif;
+    letter-spacing: 0.02em;
+  }
+
+  /* ─── Pixel / Arcade border system ───────────────────────────────────── */
+
+  /* Classic pixel-art frame: sharp corners, double-layer border, offset shadow */
+  .comic-border {
+    border: 2px solid rgba(255, 255, 255, 0.65);
+    box-shadow:
+      0 0 0 1px rgba(0, 0, 0, 0.9),
+      4px 4px 0 0 rgba(0, 0, 0, 0.7),
+      inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    border-radius: 3px;
+  }
+
+  .comic-border-lg {
+    border: 2px solid rgba(255, 255, 255, 0.65);
+    box-shadow:
+      0 0 0 1px rgba(0, 0, 0, 0.9),
+      5px 5px 0 0 rgba(0, 0, 0, 0.7),
+      inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    border-radius: 3px;
+  }
+
+  .comic-border-sm {
+    border: 2px solid rgba(255, 255, 255, 0.55);
+    box-shadow:
+      0 0 0 1px rgba(0, 0, 0, 0.85),
+      3px 3px 0 0 rgba(0, 0, 0, 0.65);
+    border-radius: 2px;
+  }
+
+  /* Accent-coloured pixel border with neon glow */
+  .game-border {
+    border: 2px solid currentColor;
+    box-shadow: 3px 3px 0 0 rgba(0, 0, 0, 0.65), 0 0 12px currentColor;
+    border-radius: 2px;
+  }
+
+  /* Neon-outlined arcade panel (dark interior) */
+  .arcade-panel {
+    background: rgba(6, 3, 12, 0.88);
+    border: 2px solid rgba(255, 255, 255, 0.18);
+    box-shadow:
+      0 0 0 1px rgba(0, 0, 0, 0.9),
+      4px 4px 0 0 rgba(0, 0, 0, 0.6),
+      inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    border-radius: 3px;
+  }
+
+  /* CRT monitor / terminal panel */
+  .crt-panel {
+    background: rgba(2, 6, 14, 0.95);
+    border: 2px solid rgba(0, 229, 255, 0.55);
+    box-shadow:
+      0 0 0 1px rgba(0, 0, 0, 0.9),
+      0 0 18px rgba(0, 229, 255, 0.2),
+      4px 4px 0 0 rgba(0, 0, 0, 0.65);
+    border-radius: 3px;
+  }
+
+  /* Outer arcade cabinet bezel frame */
+  .arcade-frame {
+    background: rgba(4, 2, 10, 0.95);
+    border: 3px solid rgba(255, 255, 255, 0.55);
+    box-shadow:
+      0 0 0 1px rgba(0, 0, 0, 0.95),
+      0 0 0 4px rgba(255, 255, 255, 0.04),
+      7px 7px 0 0 rgba(0, 0, 0, 0.75),
+      0 0 48px rgba(0, 0, 0, 0.5);
+    border-radius: 4px;
+  }
+
+  /* ─── Text effects ────────────────────────────────────────────────────── */
+
+  /* Neon glow — colour inherits from text colour (use with style color) */
+  .comic-text-shadow {
+    text-shadow:
+      0 0 12px currentColor,
+      0 0 28px color-mix(in srgb, currentColor 55%, transparent),
+      2px 2px 0 rgba(0, 0, 0, 0.85);
+  }
+
+  .comic-text-shadow-sm {
+    text-shadow:
+      0 0 10px rgba(255, 255, 255, 0.22),
+      1px 1px 0 rgba(0, 0, 0, 0.9);
+  }
+
+  /* ─── Halftone patterns (subtle on dark) ──────────────────────────────── */
+
+  .comic-halftone {
+    background-image: radial-gradient(rgba(255, 255, 255, 0.055) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+
+  .comic-halftone-light {
+    background-image: radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+    background-size: 14px 14px;
+  }
+
+  /* ─── Arcade floor grid ───────────────────────────────────────────────── */
+
+  .arcade-grid {
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.028) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.028) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+
+  /* ─── CRT scanlines overlay ───────────────────────────────────────────── */
+
+  .scanlines {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .scanlines::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent 0px,
+      transparent 3px,
+      rgba(0, 0, 0, 0.065) 3px,
+      rgba(0, 0, 0, 0.065) 4px
+    );
+    pointer-events: none;
+    z-index: 5;
+    border-radius: inherit;
+  }
+
+  /* ─── Radial speed burst ──────────────────────────────────────────────── */
+
+  .comic-radial-burst {
+    background: repeating-conic-gradient(
+      from 0deg,
+      rgba(255, 255, 255, 0.22) 0deg 5deg,
+      transparent 5deg 11deg
+    );
+  }
+
+  /* ─── Typing dots (square pixels) ────────────────────────────────────── */
+
+  .typing-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 0;
+    background: currentColor;
+    animation: typing 1.2s ease-in-out infinite;
+  }
+
+  .typing-dot-delay-1 { animation-delay: 140ms; }
+  .typing-dot-delay-2 { animation-delay: 280ms; }
+
+  /* ─── Kinetic helpers (all preserved) ────────────────────────────────── */
+
+  .kinetic-letter {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(0.6em) rotate(-8deg) scale(0.6);
+    animation: kineticLetter 720ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  }
+
+  .kinetic-line {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(40px);
+    animation: kineticLine 900ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  }
+
+  .kinetic-fade {
+    opacity: 0;
+    animation: kineticFade 800ms ease forwards;
+  }
+
+  .kinetic-rise {
+    opacity: 0;
+    transform: translateY(40px) scale(0.92);
+    animation: kineticRise 900ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  }
+
+  .kinetic-scale {
+    opacity: 0;
+    transform: scale(0.6) rotate(-6deg);
+    animation: kineticScale 1100ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  }
+
+  .kinetic-pop {
+    opacity: 0;
+    transform: scale(0.4) rotate(-10deg);
+    animation: kineticPop 700ms cubic-bezier(0.34, 1.8, 0.64, 1) forwards;
+  }
+
+  .float-soft   { animation: floatSoft   6s ease-in-out infinite; }
+  .float-medium { animation: floatMedium 5s ease-in-out infinite; }
+  .float-slower { animation: floatSlower 7.5s ease-in-out infinite; }
+
+  .wiggle      { animation: wiggle 3.4s ease-in-out infinite; transform-origin: center; }
+  .wiggle-fast { animation: wiggle 1.8s ease-in-out infinite; transform-origin: center; }
+
+  .bounce-soft { animation: bounceSoft 2.6s ease-in-out infinite; }
+
+  .spin-slow           { animation: spin 32s linear infinite; }
+  .spin-slower-reverse { animation: spin 44s linear infinite reverse; }
+
+  .blob-drift         { animation: blobDrift 26s ease-in-out infinite; }
+  .blob-drift-reverse { animation: blobDrift 38s ease-in-out infinite reverse; }
+
+  .marquee-track { animation: marquee 38s linear infinite; }
+
+  .progress-fill-anim {
+    width: 78%;
+    animation: progressFill 1.6s ease both;
+  }
+
+  /* ─── Backdrop / curtain ──────────────────────────────────────────────── */
+
+  .backdrop-fade-in  { animation: backdropFade 900ms ease forwards; }
+
+  .transition-curtain {
+    animation: transitionCurtainFlash 1700ms cubic-bezier(0.55, 0.05, 0.45, 1) forwards;
+    transform-origin: center;
+  }
+
+  .transition-title {
+    animation: transitionTitleHold 1700ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  }
+
+  /* ─── Scene enter / exit ──────────────────────────────────────────────── */
+
+  .scene-anim-enter-up   { animation: sceneEnterUp   1500ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+  .scene-anim-enter-down { animation: sceneEnterDown 1500ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+  .scene-anim-exit-up    { animation: sceneExitUp    900ms  cubic-bezier(0.55, 0.05, 0.65, 0.2) forwards; }
+  .scene-anim-exit-down  { animation: sceneExitDown  900ms  cubic-bezier(0.55, 0.05, 0.65, 0.2) forwards; }
+
+  /* ─── Panel slide transitions ─────────────────────────────────────────── */
+
+  .page-flip-stage {
+    position: relative;
+    flex: 1 1 0%;
+    min-height: 0;
+    overflow: hidden;
+    perspective: 2400px;
+    perspective-origin: 50% 60%;
+    transform-style: preserve-3d;
+  }
+
+  .page-transition {
+    position: absolute;
+    top: 80px;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    min-height: 0;
+    flex-direction: column;
+    overflow: hidden;
+    transform-style: preserve-3d;
+    will-change: transform, opacity, filter;
+  }
+
+  @media (min-width: 640px)  { .page-transition { top: 88px; } }
+  @media (min-width: 1024px) { .page-transition { top: 96px; } }
+
+  .page-flip-out-forward  { animation: panelExitUp          820ms cubic-bezier(0.7,   0, 0.3,   1) forwards; }
+  .page-flip-in-forward   { animation: panelEnterFromBottom 820ms cubic-bezier(0.34, 1.4, 0.4,  1) forwards; }
+  .page-flip-out-backward { animation: panelExitDown        820ms cubic-bezier(0.7,   0, 0.3,   1) forwards; }
+  .page-flip-in-backward  { animation: panelEnterFromTop    820ms cubic-bezier(0.34, 1.4, 0.4,  1) forwards; }
+
+  /* ─── Sparkle pulse (arcade neon variant) ────────────────────────────── */
+
+  .sparkle-pulse {
+    position: relative;
+    animation: sparklePulse 2.4s ease-in-out infinite;
+  }
+
+  .sparkle-pulse::after {
+    content: '';
+    position: absolute;
+    inset: -5px;
+    border-radius: 0;
+    background: conic-gradient(from 0deg, #ffd700, #ff1177, #00e5ff, #39ff14, #ffd700);
+    z-index: -1;
+    opacity: 0.35;
+    filter: blur(10px);
+    animation: spin 4s linear infinite;
+  }
+
+  /* ─── Twinkle ─────────────────────────────────────────────────────────── */
+
+  .twinkle           { animation: twinkle 1.6s ease-in-out infinite; }
+  .twinkle-delay-1   { animation-delay: 250ms; }
+  .twinkle-delay-2   { animation-delay: 500ms; }
+  .twinkle-delay-3   { animation-delay: 750ms; }
+  .twinkle-delay-4   { animation-delay: 1000ms; }
+
+  /* ─── Orbit ───────────────────────────────────────────────────────────── */
+
+  .orbit         { animation: orbit 14s linear infinite;         transform-origin: center; }
+  .orbit-reverse { animation: orbit 18s linear infinite reverse; transform-origin: center; }
+
+  /* ─── Halo glow ───────────────────────────────────────────────────────── */
+
+  .halo-glow { animation: haloGlow 3.2s ease-in-out infinite; }
+
+  /* ─── Arcade "press start" pulse CTA ─────────────────────────────────── */
+
+  .magnetic-cta {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  .magnetic-cta::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: inherit;
+    background: conic-gradient(from var(--gleam-angle, 0deg), transparent, rgba(255, 255, 255, 0.5), transparent 30%);
+    opacity: 0.18;
+    z-index: -1;
+    animation: gleamSpin 6s linear infinite;
+  }
+
+  .magnetic-cta::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(120deg, transparent 0%, rgba(255, 255, 255, 0.4) 50%, transparent 100%);
+    transform: translateX(120%);
+    transition: transform 700ms ease;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .magnetic-cta:hover::after  { transform: translateX(-120%); }
+  .magnetic-cta:hover         { transform: translateY(-3px) rotate(-1deg); }
+
+  /* ─── Kicker label (pixel font sign) ─────────────────────────────────── */
+
+  .kicker-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.3rem 0.8rem;
+    border-radius: 2px;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 7px;
+    font-weight: 400;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    line-height: 1.8;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+  }
+
+  /* ─── Pixel blink (INSERT COIN style) ────────────────────────────────── */
+
+  .pixel-blink {
+    animation: pixelBlink 1.1s step-end infinite;
+  }
+
+  /* ─── Neon flicker ────────────────────────────────────────────────────── */
+
+  .neon-flicker {
+    animation: neonFlicker 3s ease-in-out infinite;
+  }
+}
+
+/* ─── Keyframes (all original preserved + new arcade ones) ─────────────── */
+
+@keyframes typing {
+  0%, 80%, 100% { opacity: 0.35; transform: translateY(0); }
+  40% { opacity: 1; transform: translateY(-4px); }
+}
+
+@keyframes kineticLetter {
+  to { opacity: 1; transform: translateY(0) rotate(0deg) scale(1); }
+}
+
+@keyframes kineticLine {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes kineticFade {
+  to { opacity: 1; }
+}
+
+@keyframes kineticRise {
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes kineticScale {
+  to { opacity: 1; transform: scale(1) rotate(0deg); }
+}
+
+@keyframes kineticPop {
+  60%  { transform: scale(1.08) rotate(2deg); opacity: 1; }
+  100% { opacity: 1; transform: scale(1) rotate(0deg); }
+}
+
+@keyframes floatSoft {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50%       { transform: translateY(-12px) rotate(1.5deg); }
+}
+
+@keyframes floatMedium {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50%       { transform: translateY(-22px) rotate(-2deg); }
+}
+
+@keyframes floatSlower {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50%       { transform: translateY(-10px) rotate(1deg); }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .journey-key-float {
+    animation: journeyKeyBob 3.2s ease-in-out infinite;
+  }
+}
+
+@keyframes journeyKeyBob {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-6px); }
+}
+
+/* Journey roadmap — score ticker & step bursts */
+@keyframes journeyPointsPop {
+  0% {
+    opacity: 0;
+    transform: translateY(8px) scale(0.92);
+    filter: blur(4px);
+  }
+  55% {
+    opacity: 1;
+    transform: translateY(-2px) scale(1.04);
+    filter: blur(0);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .journey-points-enter {
+    animation: journeyPointsPop 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .journey-active-ring {
+    animation: journeyRingPulse 1.85s ease-in-out infinite;
+  }
+}
+
+@keyframes journeyRingPulse {
+  0%,
+  100% {
+    box-shadow:
+      0 0 0 2px rgba(0, 0, 0, 0.92),
+      0 0 0 4px rgba(255, 25, 100, 0.5),
+      0 0 20px rgba(255, 17, 119, 0.42),
+      0 0 36px rgba(255, 17, 119, 0.18),
+      inset 0 2px 10px rgba(0, 0, 0, 0.5),
+      inset 0 0 16px rgba(255, 17, 119, 0.1);
+  }
+  50% {
+    box-shadow:
+      0 0 0 2px rgba(0, 0, 0, 0.92),
+      0 0 0 5px rgba(255, 52, 120, 0.68),
+      0 0 32px rgba(255, 17, 119, 0.52),
+      0 0 52px rgba(255, 17, 119, 0.22),
+      inset 0 2px 10px rgba(0, 0, 0, 0.42),
+      inset 0 0 22px rgba(255, 17, 119, 0.16);
+  }
+}
+
+/* Journey scene fits in the fixed 100dvh shell without an inner vertical scroll area */
+@media (max-height: 820px) {
+  .journey-scene-fit .journey-roadmap-row {
+    transform: scale(0.94);
+    transform-origin: 50% 100%;
+  }
+}
+
+@media (max-height: 720px) {
+  .journey-scene-fit .journey-roadmap-row {
+    transform: scale(0.88);
+    transform-origin: 50% 100%;
+  }
+}
+
+@media (max-height: 620px) {
+  .journey-scene-fit .journey-roadmap-row {
+    transform: scale(0.8);
+    transform-origin: 50% 100%;
+  }
+}
+@keyframes wiggle {
+  0%, 100% { transform: rotate(-3deg); }
+  50%       { transform: rotate(3deg); }
+}
+
+@keyframes bounceSoft {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-14px); }
+}
+
+@keyframes blobDrift {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  33%       { transform: translate3d(34px, -28px, 0) scale(1.08); }
+  66%       { transform: translate3d(-22px, 22px, 0) scale(0.94); }
+}
+
+@keyframes marquee {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes progressFill {
+  from { width: 8%; }
+  to   { width: 78%; }
+}
+
+@keyframes backdropFade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes gleamSpin {
+  to { --gleam-angle: 360deg; }
+}
+
+@property --gleam-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes transitionCurtainFlash {
+  0%   { opacity: 0; transform: scale(1.04); }
+  18%  { opacity: 1; transform: scale(1); }
+  62%  { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1); }
+}
+
+@keyframes transitionTitleHold {
+  0%   { opacity: 0; transform: translate3d(0, 28px, 0) scale(0.6) rotate(-6deg); }
+  20%  { opacity: 1; transform: translate3d(0, 0, 0)   scale(1) rotate(-2deg); }
+  68%  { opacity: 1; transform: translate3d(0, 0, 0)   scale(1) rotate(-2deg); }
+  100% { opacity: 0; transform: translate3d(0, -28px, 0) scale(1.08) rotate(0deg); }
+}
+
+@keyframes sceneEnterUp {
+  0%   { opacity: 0; transform: translate3d(0, 60px, 0) scale(0.96); filter: blur(3px); }
+  55%  { opacity: 1; filter: blur(0); }
+  100% { opacity: 1; transform: translate3d(0, 0, 0) scale(1); filter: blur(0); }
+}
+
+@keyframes sceneEnterDown {
+  0%   { opacity: 0; transform: translate3d(0, -60px, 0) scale(0.96); filter: blur(3px); }
+  55%  { opacity: 1; filter: blur(0); }
+  100% { opacity: 1; transform: translate3d(0, 0, 0) scale(1); filter: blur(0); }
+}
+
+@keyframes sceneExitUp {
+  0%   { opacity: 1; transform: translate3d(0, 0, 0);        filter: blur(0); }
+  100% { opacity: 0; transform: translate3d(0, -70px, 0) scale(0.96); filter: blur(3px); }
+}
+
+@keyframes sceneExitDown {
+  0%   { opacity: 1; transform: translate3d(0, 0, 0);       filter: blur(0); }
+  100% { opacity: 0; transform: translate3d(0, 70px, 0) scale(0.96); filter: blur(3px); }
+}
+
+@keyframes panelExitUp {
+  0%   { transform: translate3d(0, 0, 0)    scale(1)    rotate(0deg); opacity: 1; filter: brightness(1); }
+  60%  { opacity: 0.9; filter: brightness(0.96); }
+  100% { transform: translate3d(0, -110%, 0) scale(0.92) rotate(-2deg); opacity: 0; filter: brightness(0.86); }
+}
+
+@keyframes panelEnterFromBottom {
+  0%   { transform: translate3d(0, 110%, 0) scale(0.92) rotate(2deg);  opacity: 0; filter: brightness(0.9); }
+  55%  { opacity: 1; filter: brightness(1.02); }
+  72%  { transform: translate3d(0, -1.5%, 0) scale(1.012) rotate(-0.4deg); filter: brightness(1.01); }
+  88%  { transform: translate3d(0, 0.5%, 0)  scale(0.998) rotate(0.15deg); }
+  100% { transform: translate3d(0, 0, 0)    scale(1)     rotate(0deg);  opacity: 1; filter: brightness(1); }
+}
+
+@keyframes panelExitDown {
+  0%   { transform: translate3d(0, 0, 0)    scale(1)    rotate(0deg); opacity: 1; filter: brightness(1); }
+  60%  { opacity: 0.9; filter: brightness(0.96); }
+  100% { transform: translate3d(0, 110%, 0) scale(0.92) rotate(2deg);  opacity: 0; filter: brightness(0.86); }
+}
+
+@keyframes sparklePulse {
+  0%, 100% {
+    transform: rotate(-2deg) scale(1);
+    box-shadow: 3px 3px 0 0 rgba(0,0,0,0.5), 0 0 0 0 rgba(255,215,0,0.5);
+  }
+  50% {
+    transform: rotate(-2deg) scale(1.04);
+    box-shadow: 3px 3px 0 0 rgba(0,0,0,0.5), 0 0 0 14px rgba(255,215,0,0);
+  }
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.3; transform: scale(0.8) rotate(0deg); }
+  50%       { opacity: 1;   transform: scale(1.25) rotate(20deg); }
+}
+
+@keyframes orbit {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes haloGlow {
+  0%, 100% { opacity: 0.4; transform: scale(1);    filter: blur(28px); }
+  50%       { opacity: 0.8; transform: scale(1.08); filter: blur(40px); }
+}
+
+@keyframes panelEnterFromTop {
+  0%   { transform: translate3d(0, -110%, 0) scale(0.92) rotate(-2deg); opacity: 0; filter: brightness(0.9); }
+  55%  { opacity: 1; filter: brightness(1.02); }
+  72%  { transform: translate3d(0, 1.5%, 0) scale(1.012) rotate(0.4deg); filter: brightness(1.01); }
+  88%  { transform: translate3d(0, -0.5%, 0) scale(0.998) rotate(-0.15deg); }
+  100% { transform: translate3d(0, 0, 0)   scale(1)     rotate(0deg); opacity: 1; filter: brightness(1); }
+}
+
+/* ─── New arcade keyframes ────────────────────────────────────────────── */
+
+@keyframes pixelBlink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+@keyframes neonFlicker {
+  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+    opacity: 1;
+    filter: brightness(1);
+  }
+  20%, 24%, 55% {
+    opacity: 0.85;
+    filter: brightness(0.7);
+  }
+}
+
+@keyframes arcadeScanline {
+  0%   { transform: translateY(-100%); }
+  100% { transform: translateY(100vh); }
+}
+
+@keyframes coinSpin {
+  0%   { transform: scaleX(1); }
+  50%  { transform: scaleX(0.1); }
+  100% { transform: scaleX(1); }
+}
+
+/* ─── Arcade wallpaper — slow Ken Burns pan/zoom ──────────────────────── */
+
+@keyframes arcadeWallpaperPan {
+  0%   { transform: scale(1.18) translate3d(-2.2%, -1.4%, 0); }
+  50%  { transform: scale(1.24) translate3d(2.4%, 1.6%, 0); }
+  100% { transform: scale(1.18) translate3d(-2.2%, -1.4%, 0); }
+}
+
+.arcade-wallpaper {
+  background-image: url('/arcade-wallpaper.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  will-change: transform;
+  animation: arcadeWallpaperPan 38s ease-in-out infinite;
+  transform-origin: center center;
+}
+
+/* Reference-matched arcade hero wallpaper (smooth photo-style, no pixel-snap) */
+.arcade-hero-bg {
+  background-image: url('/arcade-hero-bg.webp');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  will-change: transform;
+  animation: arcadeWallpaperPan 38s ease-in-out infinite;
+  transform-origin: center center;
+}
+
+/* ─── Sprite drift — gentle wandering motion for arcade sprites ──────── */
+
+@keyframes spriteDriftA {
+  0%, 100% { transform: translate3d(0, 0, 0) rotate(-3deg); }
+  25%       { transform: translate3d(8px, -10px, 0) rotate(3deg); }
+  50%       { transform: translate3d(-6px, -16px, 0) rotate(-2deg); }
+  75%       { transform: translate3d(10px, -6px, 0) rotate(4deg); }
+}
+
+@keyframes spriteDriftB {
+  0%, 100% { transform: translate3d(0, 0, 0) rotate(0deg); }
+  33%       { transform: translate3d(-12px, 8px, 0) rotate(-5deg); }
+  66%       { transform: translate3d(14px, -10px, 0) rotate(5deg); }
+}
+
+.sprite-drift-a { animation: spriteDriftA 9s ease-in-out infinite; }
+.sprite-drift-b { animation: spriteDriftB 11s ease-in-out infinite; }
+
+/* ─── Coin rise — arcade pickup floating up + fading ─────────────────── */
+
+@keyframes coinRise {
+  0%   { transform: translate3d(0, 0, 0) scale(0.6); opacity: 0; }
+  18%  { opacity: 0.9; transform: translate3d(0, -10vh, 0) scale(1); }
+  82%  { opacity: 0.9; }
+  100% { transform: translate3d(0, -110vh, 0) scale(0.85); opacity: 0; }
+}
+
+.coin-rise { animation: coinRise 14s linear infinite; }
+
+/* ─── Invader march — left/right ping-pong like a real invader row ───── */
+
+@keyframes invaderMarch {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  25%       { transform: translate3d(20px, 0, 0); }
+  50%       { transform: translate3d(20px, 6px, 0); }
+  75%       { transform: translate3d(0, 6px, 0); }
+}
+
+.invader-march { animation: invaderMarch 4.6s steps(4, end) infinite; }
+
+/* ─── Ghost slide — horizontal wander like a Pac-Man ghost ───────────── */
+
+@keyframes ghostSlide {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50%       { transform: translate3d(40px, -4px, 0); }
+}
+
+.ghost-slide { animation: ghostSlide 8s ease-in-out infinite; }
+
+/* ─── Pixel rain — slow vertical drift for tiny pixel dust ───────────── */
+
+@keyframes pixelRain {
+  0%   { transform: translate3d(0, -10vh, 0); opacity: 0; }
+  10%  { opacity: 0.7; }
+  90%  { opacity: 0.7; }
+  100% { transform: translate3d(0, 110vh, 0); opacity: 0; }
+}
+
+.pixel-rain { animation: pixelRain 18s linear infinite; }
+
+/* ─── Pixelated rendering helper ─────────────────────────────────────── */
+
+.pixelated {
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+/* ─── Vignette overlay for arcade wallpaper ──────────────────────────── */
+
+.arcade-vignette {
+  background:
+    radial-gradient(ellipse at center, transparent 25%, rgba(0,0,0,0.45) 70%, rgba(0,0,0,0.85) 100%);
+}
+
+/* ─── Hero scene: ticker marquee ─────────────────────────────────────── */
+
+@keyframes tickerScroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.ticker-scroll {
+  display: flex;
+  white-space: nowrap;
+  will-change: transform;
+  animation: tickerScroll 28s linear infinite;
+}
+
+/* ─── Hero scene: pulse rings around mascot ──────────────────────────── */
+
+@keyframes pulseRing1 {
+  0%, 100% { transform: scale(1);    opacity: 0.28; }
+  50%       { transform: scale(1.1); opacity: 0.08; }
+}
+
+@keyframes pulseRing2 {
+  0%, 100% { transform: scale(1);    opacity: 0.16; }
+  50%       { transform: scale(1.08); opacity: 0.04; }
+}
+
+.pulse-ring-1 { animation: pulseRing1 3.2s ease-in-out infinite; }
+.pulse-ring-2 { animation: pulseRing2 4.1s ease-in-out infinite 0.6s; }
+.pulse-ring-3 { animation: pulseRing1 5s   ease-in-out infinite 1.2s; }
+
+/* ─── Hero scene: floating action badge ──────────────────────────────── */
+
+@keyframes badgeFloat {
+  0%, 100% { transform: translateY(0px)   rotate(var(--br, -12deg)); }
+  33%       { transform: translateY(-9px) rotate(calc(var(--br, -12deg) + 5deg)); }
+  66%       { transform: translateY(-4px) rotate(calc(var(--br, -12deg) - 3deg)); }
+}
+
+.badge-float { animation: badgeFloat 3.8s ease-in-out infinite; }
+
+/* ─── Hero scene: punch-click burst ──────────────────────────────────── */
+
+@keyframes heroPunch {
+  0%   { transform: scale(1)    rotate(0deg); filter: brightness(1); }
+  18%  { transform: scale(1.14) rotate(-4deg); filter: brightness(1.3) saturate(1.4); }
+  42%  { transform: scale(0.93) rotate(3deg);  filter: brightness(1); }
+  68%  { transform: scale(1.05) rotate(-1deg); }
+  100% { transform: scale(1)    rotate(0deg); }
+}
+
+.hero-punch { animation: heroPunch 680ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+
+/* ─── POW popup on punch ──────────────────────────────────────────────── */
+
+@keyframes powPop {
+  0%   { opacity: 0; transform: scale(0.3) rotate(-20deg) translate(-50%, -50%); }
+  40%  { opacity: 1; transform: scale(1.2) rotate(5deg)   translate(-50%, -50%); }
+  70%  { opacity: 1; transform: scale(0.95) rotate(-2deg) translate(-50%, -50%); }
+  100% { opacity: 0; transform: scale(1.1)  rotate(3deg)  translate(-50%, -120%) translateY(-20px); }
+}
+
+.pow-pop { animation: powPop 700ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+
+/* ─── Starburst slow rotation ─────────────────────────────────────────── */
+
+@keyframes starburstSpin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.starburst-spin  { animation: starburstSpin 40s linear infinite; }
+.starburst-spin-r { animation: starburstSpin 28s linear infinite reverse; }
+
+/* ─── Speed lines radiate out (hero backdrop) ────────────────────────── */
+
+@keyframes speedLinePulse {
+  0%, 100% { opacity: 0.12; transform: scale(1); }
+  50%       { opacity: 0.22; transform: scale(1.04); }
+}
+
+.speed-lines-pulse { animation: speedLinePulse 3s ease-in-out infinite; }
+
+/* ─── Chromatic aberration shimmer on headline ───────────────────────── */
+
+@keyframes chromaShift {
+  0%, 100% { text-shadow: -2px 0 rgba(255,0,80,0.5), 2px 0 rgba(0,200,255,0.5), 0 0 28px currentColor, 2px 2px 0 rgba(0,0,0,0.9); }
+  50%       { text-shadow: 2px 0 rgba(255,0,80,0.4), -2px 0 rgba(0,200,255,0.4), 0 0 40px currentColor, 2px 2px 0 rgba(0,0,0,0.9); }
+}
+
+.chroma-headline { animation: chromaShift 5s ease-in-out infinite; }
+
+/* ─── Score tick-up ───────────────────────────────────────────────────── */
+
+@keyframes scoreTick {
+  0%   { transform: translateY(0); }
+  25%  { transform: translateY(-3px); }
+  50%  { transform: translateY(0); }
+}
+
+.score-tick { animation: scoreTick 0.4s ease; }
+
+/* ─── Hero entrance scale with elastic overshoot ─────────────────────── */
+
+@keyframes heroEntrance {
+  0%   { opacity: 0; transform: scale(0.55) translateY(30px) rotate(-6deg); filter: blur(6px); }
+  55%  { opacity: 1; filter: blur(0); }
+  72%  { transform: scale(1.06) translateY(-4px) rotate(2deg); }
+  86%  { transform: scale(0.97) translateY(2px) rotate(-0.5deg); }
+  100% { opacity: 1; transform: scale(1) translateY(0) rotate(0deg); filter: blur(0); }
+}
+
+.hero-entrance { animation: heroEntrance 1100ms cubic-bezier(0.34, 1.4, 0.64, 1) forwards; }
+
+/* ─── Scanline wipe on ticker ─────────────────────────────────────────── */
+
+.ticker-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.ticker-shimmer::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent 0px,
+    transparent 2px,
+    rgba(0,0,0,0.08) 2px,
+    rgba(0,0,0,0.08) 3px
+  );
+  pointer-events: none;
+}
+
+/* ─── Reference character-card frame: tilted comic frame gentle sway ───── */
+
+@keyframes cardTiltSway {
+  0%, 100% { transform: rotate(3deg);   }
+  50%       { transform: rotate(4.5deg); }
+}
+
+.card-tilt-sway { animation: cardTiltSway 6s ease-in-out infinite; }
+
+/* ─── Reference 1UP badge: tilted bob & pulse ─────────────────────────── */
+
+@keyframes badgeTiltBob {
+  0%, 100% { transform: rotate(12deg) translateY(0)    scale(1);    }
+  50%       { transform: rotate(14deg) translateY(-6px) scale(1.05); }
+}
+
+.badge-tilt-bob { animation: badgeTiltBob 2.4s ease-in-out infinite; }
+
+/* ─── Reference yellow action square: arcade bounce ───────────────────── */
+
+@keyframes squareBounce {
+  0%, 100% { transform: translateY(-50%) rotate(0deg); }
+  25%       { transform: translateY(-62%) rotate(-4deg); }
+  50%       { transform: translateY(-44%) rotate(4deg);  }
+  75%       { transform: translateY(-58%) rotate(-2deg); }
+}
+
+.square-bounce { animation: squareBounce 1.6s ease-in-out infinite; }
+
+/* ─── Reference terminal status block: line-by-line wipe in ───────────── */
+
+@keyframes statusLineIn {
+  0%   { opacity: 0; clip-path: inset(0 100% 0 0); }
+  60%  {              clip-path: inset(0 0 0 0); }
+  100% { opacity: 1; clip-path: inset(0 0 0 0); }
+}
+
+.status-line-in {
+  opacity: 0;
+  animation: statusLineIn 700ms cubic-bezier(0.25, 0.8, 0.3, 1) var(--status-delay, 0ms) forwards;
+}
+
+/* ─── Native arcade animate-pulse fallback ────────────────────────────── */
+
+@keyframes arcadePulseSquare {
+  0%, 100% { opacity: 1;    transform: scale(1);   box-shadow: 0 0 18px #35D6FF, 3px 3px 0 rgba(32,37,68,0.55); }
+  50%       { opacity: 0.7; transform: scale(1.06); box-shadow: 0 0 28px #35D6FF, 3px 3px 0 rgba(32,37,68,0.55); }
+}
+
+.animate-pulse { animation: arcadePulseSquare 1.6s ease-in-out infinite; }
+
+/* ─── About scene: arcade character-select HUD ──────────────────────────── */
+
+@keyframes aboutCrtSpin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes aboutScanDrift {
+  0% { background-position: 0 0; }
+  100% { background-position: 0 12px; }
+}
+
+@keyframes aboutTicker {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes aboutWidgetPop {
+  0% { opacity: 0; transform: translateY(10px) scale(0.96); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.about-crt-outer {
+  position: relative;
+  border-radius: 1.1rem;
+  padding: 5px;
+  overflow: hidden;
+  background: linear-gradient(165deg, rgba(32, 37, 68, 0.95), rgba(14, 17, 38, 0.98));
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.08),
+    0 12px 36px rgba(0, 0, 0, 0.35),
+    0 0 40px rgba(53, 214, 255, 0.12);
+}
+
+.about-crt-spin {
+  position: absolute;
+  inset: -60%;
+  opacity: 0.55;
+  background: conic-gradient(
+    from 0deg,
+    #35d6ff,
+    #ff1177,
+    #f7c948,
+    #35d6ff,
+    #ff1177,
+    #35d6ff
+  );
+  animation: aboutCrtSpin 5s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about-crt-spin {
+    animation: none;
+    opacity: 0.25;
+    transform: rotate(25deg);
+  }
+}
+
+.about-crt-inner {
+  position: relative;
+  z-index: 1;
+  border-radius: 0.85rem;
+  overflow: hidden;
+  background: radial-gradient(
+    ellipse 80% 70% at 50% 38%,
+    rgba(238, 242, 249, 0.28) 0%,
+    rgba(217, 223, 234, 0.18) 72%,
+    rgba(187, 196, 214, 0.12) 100%
+  );
+}
+
+.about-scanlines {
+  pointer-events: none;
+  background-image: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(32, 37, 68, 0.035) 2px,
+    rgba(32, 37, 68, 0.035) 3px
+  );
+  animation: aboutScanDrift 3.2s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about-scanlines {
+    animation: none;
+  }
+}
+
+.about-ticker-strip {
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.about-ticker-track {
+  animation: aboutTicker 22s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about-ticker-track {
+    animation: none;
+  }
+}
+
+.about-stat-bar-fill {
+  transition: width 680ms cubic-bezier(0.34, 1.2, 0.4, 1);
+}
+
+.about-widget-enter {
+  animation: aboutWidgetPop 480ms cubic-bezier(0.34, 1.4, 0.42, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about-widget-enter {
+    animation: none;
+  }
+}

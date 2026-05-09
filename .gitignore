@@ -1,0 +1,12 @@
+.env
+__pycache__/
+*.pyc
+.venv/
+venv/
+.DS_Store
+
+# Frontend
+website/node_modules/
+website/dist/
+website/.vite/
+website/screenshots/
