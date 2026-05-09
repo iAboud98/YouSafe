@@ -31,9 +31,16 @@ const UI = {
   gold: '#f7c948',
 } as const;
 
+const isSafariBrowser = (): boolean => {
+  if (typeof navigator === 'undefined') return false;
+  const ua = navigator.userAgent;
+  return /Safari/.test(ua) && !/(Chrome|Chromium|CriOS|Edg|OPR)/.test(ua);
+};
+
 function MascotStage({ speaking }: { reducedMotion: boolean; speaking: boolean }) {
   const { accent, glow } = TALK_SCENE_THEME;
   const videoRef = useRef<HTMLVideoElement>(null);
+  const needsBlend = isSafariBrowser();
 
   useEffect(() => {
     const v = videoRef.current;
@@ -76,13 +83,13 @@ function MascotStage({ speaking }: { reducedMotion: boolean; speaking: boolean }
       />
       <video
         ref={videoRef}
-        className="absolute left-1/2 top-1/2 z-10 h-[86%] w-[86%] -translate-x-1/2 -translate-y-1/2 object-contain drop-shadow-[8px_12px_0_rgba(0,0,0,0.82)] float-medium"
+        className="absolute left-1/2 top-1/2 z-10 h-[86%] w-[86%] -translate-x-1/2 -translate-y-1/2 object-contain float-medium"
         loop
         muted
         playsInline
         preload="auto"
         aria-label="بطل غزال يوسف — فيديو"
-        style={{ display: speaking ? 'block' : 'none' }}
+        style={{ display: speaking ? 'block' : 'none', ...(needsBlend && { mixBlendMode: 'screen' as const }) }}
       >
         <source src="/Gazal_talking.webm" type="video/webm" />
         <source src="/Gazal_talking.mp4" type="video/mp4" />
