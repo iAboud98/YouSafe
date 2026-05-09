@@ -1,8 +1,9 @@
 import { ArrowRight } from 'lucide-react';
 import { KineticHeading } from '../components/KineticHeading';
+import { PixelScrollArrows } from '../components/PixelScrollArrows';
 import type { SceneComponentProps } from '../types';
 
-export const LevelPreviewScene = ({ active, reducedMotion, theme }: SceneComponentProps) => {
+export const LevelPreviewScene = ({ active, reducedMotion, theme, onNavigate }: SceneComponentProps) => {
   return (
     <div className="relative grid h-full w-full grid-cols-1 gap-10 px-6 pb-10 pt-6 sm:px-12 lg:grid-cols-[1fr_1fr] lg:px-20">
       {/* ── Left: copy ── */}
@@ -23,7 +24,7 @@ export const LevelPreviewScene = ({ active, reducedMotion, theme }: SceneCompone
         </h2>
 
         <p
-          className={`mt-7 max-w-xl self-end text-base leading-8 sm:text-lg font-cartoon ${active ? 'kinetic-rise' : 'opacity-0'}`}
+          className={`mt-7 text-base leading-8 sm:text-lg font-cartoon ${active ? 'kinetic-rise' : 'opacity-0'}`}
           style={{ color: '#ffffff', animationDelay: '780ms' }}
         >
           خلّص التحديات، فكّ الألغاز، وافتح مراحل جديدة. كل غرفة بتعلّمك مهارة حقيقية بطريقة ممتعة وتفاعلية، وممكن مهارة وحدة في اللعبة تنقذ حياتك بعدين.
@@ -101,6 +102,7 @@ export const LevelPreviewScene = ({ active, reducedMotion, theme }: SceneCompone
           </div>
         </div>
       </div>
+      <PixelScrollArrows accent={theme.accent} active={active} reducedMotion={reducedMotion} onClick={() => onNavigate?.('assistant')} />
     </div>
   );
 };

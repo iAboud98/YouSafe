@@ -8,6 +8,7 @@ import {
 } from 'react';
 import { ChevronLeft, ChevronRight, Sparkles } from 'lucide-react';
 import { KineticHeading } from '../components/KineticHeading';
+import { PixelScrollArrows } from '../components/PixelScrollArrows';
 import type { SceneComponentProps } from '../types';
 
 const ACCENT_CYAN = '#35D6FF';
@@ -26,10 +27,6 @@ type Character = {
   stats: Stat[];
   perk: string;
 };
-
-function toArNum(n: number): string {
-  return n.toLocaleString('ar-EG', { useGrouping: false });
-}
 
 const characters: Character[] = [
   {
@@ -92,7 +89,7 @@ const characters: Character[] = [
 
 const SWIPE_PX = 52;
 
-export const AboutScene = ({ active, reducedMotion }: SceneComponentProps) => {
+export const AboutScene = ({ active, reducedMotion, theme, onNavigate }: SceneComponentProps) => {
   const [index, setIndex] = useState(0);
   const touchStartX = useRef<number | null>(null);
   const stageRef = useRef<HTMLDivElement>(null);
@@ -149,90 +146,25 @@ export const AboutScene = ({ active, reducedMotion }: SceneComponentProps) => {
         };
 
   return (
-    <div className="relative z-[1] mx-auto flex min-h-0 w-full max-w-[1200px] flex-1 flex-col gap-5 overflow-hidden px-4 pb-6 pt-4 sm:px-6 lg:flex-row lg:items-stretch lg:gap-6 lg:px-8">
+    <div className="relative z-[1] mx-auto flex min-h-0 w-full max-w-[1500px] flex-1 flex-col gap-5 overflow-hidden px-4 pb-6 pt-4 sm:px-6 lg:flex-row lg:items-center lg:gap-8 lg:px-10">
 
-      {/* ── Left: CRT character display ── */}
-      <div className="relative flex min-h-0 min-w-0 flex-1 flex-col lg:max-w-[56%]">
-        <div
-          className={`about-crt-outer ${active ? 'kinetic-rise' : 'opacity-0'}`}
-          style={{ animationDelay: reducedMotion ? '0ms' : '120ms' }}
-        >
-          <div className="about-crt-spin" aria-hidden />
-          <div className="about-crt-inner">
-            <div className="about-scanlines absolute inset-0 z-[2] opacity-50" aria-hidden />
+      {/* ── CRT character display + thumbnails ── */}
+      <div className="relative flex min-h-0 min-w-0 flex-1 items-center gap-5 lg:max-w-[60%]">
 
-            <div dir="ltr" className="pointer-events-none absolute inset-x-2 top-3 z-[4] flex justify-between sm:inset-x-4">
-              <button
-                type="button"
-                aria-label="الشخصية السابقة"
-                onClick={() => go(-1)}
-                className="pointer-events-auto flex h-10 w-10 items-center justify-center border-2 border-[#202544] bg-[#F7C948] text-[#202544] shadow-[3px_3px_0_#202544] transition-transform active:translate-x-0.5 active:translate-y-0.5 active:shadow-none sm:h-11 sm:w-11"
-                style={{ borderRadius: '4px' }}
-              >
-                <ChevronLeft className="h-5 w-5" strokeWidth={2.5} />
-              </button>
-              <button
-                type="button"
-                aria-label="الشخصية التالية"
-                onClick={() => go(1)}
-                className="pointer-events-auto flex h-10 w-10 items-center justify-center border-2 border-[#202544] bg-[#F7C948] text-[#202544] shadow-[3px_3px_0_#202544] transition-transform active:translate-x-0.5 active:translate-y-0.5 active:shadow-none sm:h-11 sm:w-11"
-                style={{ borderRadius: '4px' }}
-              >
-                <ChevronRight className="h-5 w-5" strokeWidth={2.5} />
-              </button>
-            </div>
+        {/* Thumbnails column — appears on the right in RTL */}
+        <div className="hidden flex-col items-center gap-3 lg:flex lg:order-first">
+          {/* Up arrow */}
+          <button
+            type="button"
+            aria-label="الشخصية السابقة"
+            onClick={() => go(-1)}
+            className="flex h-10 w-10 items-center justify-center border-2 border-[#202544] bg-[#F7C948] text-[#202544] shadow-[3px_3px_0_#202544] transition-transform active:translate-x-0.5 active:translate-y-0.5 active:shadow-none sm:h-11 sm:w-11"
+            style={{ borderRadius: '4px' }}
+          >
+            <ChevronLeft className="h-5 w-5 rotate-90" strokeWidth={2.5} />
+          </button>
 
-            <div
-              ref={stageRef}
-              className="relative z-[3] px-5 pb-6 pt-10 sm:px-8 sm:pb-10 sm:pt-12"
-              onMouseMove={onStageMouseMove}
-              onMouseLeave={onStageMouseLeave}
-              onTouchStart={(e) => { touchStartX.current = e.touches[0]?.clientX ?? null; }}
-              onTouchEnd={(e) => {
-                const start = touchStartX.current;
-                touchStartX.current = null;
-                if (start == null) return;
-                const dx = e.changedTouches[0].clientX - start;
-                if (dx > SWIPE_PX) go(-1);
-                else if (dx < -SWIPE_PX) go(1);
-              }}
-            >
-              <div style={tiltStyle} className="mx-auto w-full max-w-[min(100%,460px)] will-change-transform">
-                <img
-                  key={current.id}
-                  src={current.src}
-                  alt={`${current.nameAr}`}
-                  className={`mx-auto block h-auto w-full select-none object-contain drop-shadow-[0_28px_50px_rgba(32,37,68,0.28)] ${active && !reducedMotion ? 'float-medium' : ''}`}
-                  style={{ maxHeight: 'min(58vh, 560px)', imageRendering: 'auto' }}
-                  draggable={false}
-                  onError={onImgError}
-                />
-              </div>
-            </div>
-
-            {/* CRT footer LEDs */}
-            <div className="relative z-[4] flex justify-center gap-2 border-t border-[#202544]/10 bg-white/18 px-3 py-2.5 backdrop-blur-sm">
-              {characters.map((c, i) => (
-                <button
-                  key={c.id}
-                  type="button"
-                  aria-label={`انتقَل إلى ${c.nameAr}`}
-                  aria-current={i === index ? 'true' : undefined}
-                  onClick={() => setIndex(i)}
-                  className="h-2.5 rounded-full transition-all duration-300"
-                  style={{
-                    width: i === index ? '2.25rem' : '0.55rem',
-                    background: i === index ? NEON_BLUE : '#c5cedd',
-                    boxShadow: i === index ? `0 0 12px ${NEON_BLUE}99` : 'none',
-                  }}
-                />
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Character thumbnails */}
-        <div className="mt-4 flex flex-wrap justify-center gap-3 sm:gap-4">
+          {/* Character thumbnails — vertical */}
           {characters.map((char, i) => {
             const selected = i === index;
             return (
@@ -247,8 +179,8 @@ export const AboutScene = ({ active, reducedMotion }: SceneComponentProps) => {
                 <div
                   className="relative overflow-hidden border-[3px] transition-all duration-200"
                   style={{
-                    width: '4.65rem',
-                    height: '4.65rem',
+                    width: '5.5rem',
+                    height: '5.5rem',
                     borderRadius: '6px',
                     borderColor: selected ? NEON_BLUE : '#202544',
                     boxShadow: selected ? `4px 4px 0 ${CTA_YELLOW}, 0 0 18px ${NEON_BLUE}55` : '4px 4px 0 #202544',
@@ -267,21 +199,86 @@ export const AboutScene = ({ active, reducedMotion }: SceneComponentProps) => {
                     <Sparkles className="absolute left-1 top-1 h-3.5 w-3.5 text-[#F7C948] drop-shadow-sm" aria-hidden />
                   ) : null}
                 </div>
-                <span
-                  className="font-pixel text-[6px] font-normal"
-                  style={{ color: selected ? NEON_BLUE : 'rgba(32,37,68,0.45)' }}
-                  dir="rtl"
-                >
-                  منفذ {toArNum(i + 1)}
-                </span>
               </button>
             );
           })}
+
+          {/* Down arrow */}
+          <button
+            type="button"
+            aria-label="الشخصية التالية"
+            onClick={() => go(1)}
+            className="flex h-10 w-10 items-center justify-center border-2 border-[#202544] bg-[#F7C948] text-[#202544] shadow-[3px_3px_0_#202544] transition-transform active:translate-x-0.5 active:translate-y-0.5 active:shadow-none sm:h-11 sm:w-11"
+            style={{ borderRadius: '4px' }}
+          >
+            <ChevronRight className="h-5 w-5 rotate-90" strokeWidth={2.5} />
+          </button>
         </div>
+
+        {/* CRT panel */}
+        <div className="flex-1 min-w-0">
+          <div
+            className={`about-crt-outer ${active ? 'kinetic-rise' : 'opacity-0'}`}
+            style={{ animationDelay: reducedMotion ? '0ms' : '120ms' }}
+          >
+            <div className="about-crt-spin" aria-hidden />
+            <div className="about-crt-inner">
+              <div className="about-scanlines absolute inset-0 z-[2] opacity-50" aria-hidden />
+
+              <div
+                ref={stageRef}
+                className="relative z-[3] px-5 pb-6 pt-6 sm:px-8 sm:pb-8 sm:pt-8"
+                onMouseMove={onStageMouseMove}
+                onMouseLeave={onStageMouseLeave}
+                onTouchStart={(e) => { touchStartX.current = e.touches[0]?.clientX ?? null; }}
+                onTouchEnd={(e) => {
+                  const start = touchStartX.current;
+                  touchStartX.current = null;
+                  if (start == null) return;
+                  const dx = e.changedTouches[0].clientX - start;
+                  if (dx > SWIPE_PX) go(-1);
+                  else if (dx < -SWIPE_PX) go(1);
+                }}
+              >
+                <div style={{ ...tiltStyle, aspectRatio: '666 / 375' }} className="mx-auto flex w-full max-w-[min(100%,640px)] items-center justify-center will-change-transform" >
+                  <img
+                    key={current.id}
+                    src={current.src}
+                    alt={`${current.nameAr}`}
+                    className={`mx-auto block h-full w-full select-none object-contain drop-shadow-[0_28px_50px_rgba(32,37,68,0.28)] ${active && !reducedMotion ? 'float-medium' : ''}`}
+                    style={{ imageRendering: 'auto' }}
+                    draggable={false}
+                    onError={onImgError}
+                  />
+                </div>
+              </div>
+
+              {/* CRT footer LEDs */}
+              <div className="relative z-[4] flex justify-center gap-2 border-t border-[#202544]/10 bg-white/18 px-3 py-2.5 backdrop-blur-sm">
+                {characters.map((c, i) => (
+                  <button
+                    key={c.id}
+                    type="button"
+                    aria-label={`انتقَل إلى ${c.nameAr}`}
+                    aria-current={i === index ? 'true' : undefined}
+                    onClick={() => setIndex(i)}
+                    className="h-2.5 rounded-full transition-all duration-300"
+                    style={{
+                      width: i === index ? '2.25rem' : '0.55rem',
+                      background: i === index ? NEON_BLUE : '#c5cedd',
+                      boxShadow: i === index ? `0 0 12px ${NEON_BLUE}99` : 'none',
+                    }}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
 
       {/* ── Right: merged character info + stats card ── */}
-      <div className="flex w-full min-w-0 flex-col justify-start gap-4 lg:w-[min(100%,26rem)] lg:flex-none">
+      <div className="flex w-full min-w-0 flex-col justify-center gap-5 lg:w-[min(100%,30rem)] lg:flex-none">
         <header className="text-right">
           <div
             className={`inline-flex items-center border-2 border-[#202544] px-3 py-1.5 font-cartoon text-[11px] font-extrabold text-[#202544] shadow-[3px_3px_0_${NEON_BLUE}] ${active ? 'kinetic-fade' : 'opacity-0'}`}
@@ -290,7 +287,7 @@ export const AboutScene = ({ active, reducedMotion }: SceneComponentProps) => {
             وضع اختيار البطل
           </div>
 
-          <h2 className="mt-3 font-display text-[clamp(1.85rem,4.5vw,2.85rem)] font-black leading-tight tracking-tight text-[#202544]">
+          <h2 className="mt-3 font-display text-[clamp(2.2rem,5vw,3.5rem)] font-black leading-tight tracking-tight text-[#202544]">
             <span className={`block ${active ? 'kinetic-rise' : 'opacity-0'}`} style={{ animationDelay: '160ms' }}>
               <KineticHeading text="الشخصيات" active={active} reducedMotion={reducedMotion} startDelayMs={180} />
             </span>
@@ -312,35 +309,35 @@ export const AboutScene = ({ active, reducedMotion }: SceneComponentProps) => {
         >
           {/* Character name bar */}
           <div
-            className="px-4 py-3 border-b"
+            className="px-5 py-4 border-b"
             style={{ borderColor: `${NEON_BLUE}22`, background: `${NEON_BLUE}08` }}
           >
             <div className="flex flex-wrap items-baseline justify-end gap-3">
-              <h3 className="font-display text-3xl font-bold sm:text-4xl" style={{ color: '#f0f8ff' }}>{current.nameAr}</h3>
+              <h3 className="font-display text-4xl font-bold sm:text-5xl" style={{ color: '#f0f8ff' }}>{current.nameAr}</h3>
               <span className="font-pixel text-[6px] tracking-widest" style={{ color: '#ffffff', opacity: 0.9 }} lang="en">
                 {current.nameEn}
               </span>
             </div>
-            <p className="mt-1 font-cartoon text-sm font-semibold text-right" style={{ color: '#ffffff' }}>{current.role}</p>
-            <p className="mt-0.5 font-cartoon text-xs leading-relaxed text-right" style={{ color: '#ffffff', opacity: 0.92 }}>{current.keywords}</p>
+            <p className="mt-1 font-cartoon text-base font-semibold text-right" style={{ color: '#ffffff' }}>{current.role}</p>
+            <p className="mt-0.5 font-cartoon text-sm leading-relaxed text-right" style={{ color: '#ffffff', opacity: 0.92 }}>{current.keywords}</p>
           </div>
 
           {/* Stats section */}
-          <div className="px-4 py-3">
+          <div className="px-5 py-4">
             <div className="mb-3 flex flex-col items-end gap-1 pb-2 text-right">
-              <span className="font-cartoon text-xs font-extrabold" style={{ color: '#ffffff' }}>سمات الشخصية</span>
-              <span className="max-w-[16rem] text-right font-cartoon text-[11px] font-bold leading-snug" style={{ color: '#ffffff' }}>
+              <span className="font-cartoon text-sm font-extrabold" style={{ color: '#ffffff' }}>سمات الشخصية</span>
+              <span className="max-w-[18rem] text-right font-cartoon text-xs font-bold leading-snug" style={{ color: '#ffffff' }}>
                 {current.perk}
               </span>
             </div>
             <div className="space-y-3">
               {current.stats.map((s) => (
                 <div key={s.key}>
-                  <div className="mb-1 flex justify-between font-cartoon text-xs font-bold">
+                  <div className="mb-1 flex justify-between font-cartoon text-sm font-bold">
                     <span style={{ color: '#ffffff' }}>{s.key}</span>
                     <span style={{ color: NEON_BLUE, textShadow: `0 0 8px ${NEON_BLUE}` }}>{s.value}%</span>
                   </div>
-                  <div className="h-2 border" style={{ borderRadius: '2px', borderColor: `${NEON_BLUE}22`, background: 'rgba(0,20,40,0.6)' }}>
+                  <div className="h-3 border" style={{ borderRadius: '2px', borderColor: `${NEON_BLUE}22`, background: 'rgba(0,20,40,0.6)' }}>
                     <div
                       className="about-stat-bar-fill h-full"
                       style={{
@@ -357,6 +354,7 @@ export const AboutScene = ({ active, reducedMotion }: SceneComponentProps) => {
           </div>
         </div>
       </div>
+      <PixelScrollArrows accent={theme.accent} active={active} reducedMotion={reducedMotion} onClick={() => onNavigate?.('journey')} />
     </div>
   );
 };

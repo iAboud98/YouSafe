@@ -1188,6 +1188,19 @@
   animation: aboutWidgetPop 480ms cubic-bezier(0.34, 1.4, 0.42, 1) both;
 }
 
+/* ─── Pixel scroll arrows ──────────────────────────────────────────────── */
+
+@keyframes pixelScrollArrow {
+  0%   { opacity: 0; transform: translateY(-6px); }
+  30%  { opacity: 1; transform: translateY(0); }
+  70%  { opacity: 1; transform: translateY(4px); }
+  100% { opacity: 0; transform: translateY(10px); }
+}
+
+.pixel-scroll-arrow {
+  animation: pixelScrollArrow 1.4s ease-in-out infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .about-widget-enter {
     animation: none;

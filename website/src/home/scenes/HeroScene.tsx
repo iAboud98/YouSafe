@@ -1,6 +1,7 @@
-import { ArrowDown, Sparkles } from 'lucide-react';
+import { Sparkles } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { KineticHeading } from '../components/KineticHeading';
+import { PixelScrollArrows } from '../components/PixelScrollArrows';
 import type { SceneComponentProps } from '../types';
 
 const TICKER_CONTENT =
@@ -107,7 +108,7 @@ export const HeroScene = ({ active, reducedMotion, theme, onNavigate }: SceneCom
               <KineticHeading text="تعلّم. قرّر." active={active} reducedMotion={reducedMotion} startDelayMs={180} />
             </span>
             <span
-              className={`block text-[clamp(2.4rem,5.5vw,5rem)] ${active ? 'kinetic-rise' : 'opacity-0'}`}
+              className={`mt-8 block text-[clamp(2.4rem,5.5vw,5rem)] ${active ? 'kinetic-rise' : 'opacity-0'}`}
               style={{
                 color: theme.accent,
                 textShadow: `3px 3px 0 rgba(255,255,255,0.7), 4px 4px 0 rgba(0,0,0,0.18), 0 0 30px ${theme.glow}`,
@@ -178,42 +179,6 @@ export const HeroScene = ({ active, reducedMotion, theme, onNavigate }: SceneCom
             </button>
           </div>
 
-          {/* Scroll hint */}
-          <div
-            className={`flex justify-end ${active ? 'kinetic-fade' : 'opacity-0'}`}
-            style={{ animationDelay: '1100ms' }}
-          >
-            <button
-              type="button"
-              onClick={() => onNavigate?.('about')}
-              className="inline-flex items-center gap-2.5 font-cartoon text-xs font-bold uppercase tracking-[0.28em] transition-all"
-              style={{
-                padding: '8px 14px',
-                color: 'rgba(32,37,68,0.85)',
-                background: 'rgba(255,255,255,0.55)',
-                border: '1px solid rgba(32,37,68,0.22)',
-                borderRadius: '2px',
-                backdropFilter: 'blur(6px)',
-              }}
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLButtonElement).style.color = '#202544';
-                (e.currentTarget as HTMLButtonElement).style.background = 'rgba(255,255,255,0.75)';
-                (e.currentTarget as HTMLButtonElement).style.transform = 'translateY(-2px)';
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLButtonElement).style.color = 'rgba(32,37,68,0.85)';
-                (e.currentTarget as HTMLButtonElement).style.background = 'rgba(255,255,255,0.55)';
-                (e.currentTarget as HTMLButtonElement).style.transform = 'translateY(0)';
-              }}
-            >
-              <span
-                className="flex h-7 w-7 items-center justify-center rounded-sm"
-                style={{ background: 'rgba(255,255,255,0.7)', border: `1px solid ${theme.accent}66` }}
-              >
-                <ArrowDown className={`h-3.5 w-3.5 ${reducedMotion ? '' : 'bounce-soft'}`} style={{ color: theme.accent }} />
-              </span>
-            </button>
-          </div>
         </div>
 
         {/* ── HERO COLUMN ── */}
@@ -347,6 +312,8 @@ export const HeroScene = ({ active, reducedMotion, theme, onNavigate }: SceneCom
           </div>
         </div>
       </div>
+
+      <PixelScrollArrows accent={theme.accent} active={active} reducedMotion={reducedMotion} onClick={() => onNavigate?.('about')} />
     </div>
   );
 };

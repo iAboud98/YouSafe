@@ -1,6 +1,7 @@
 import { Check, Eye, Gamepad2, MapPinned, Shield } from 'lucide-react';
 import { Fragment, useEffect, useMemo, useRef, useState } from 'react';
 import { KineticHeading } from '../components/KineticHeading';
+import { PixelScrollArrows } from '../components/PixelScrollArrows';
 import type { SceneComponentProps } from '../types';
 
 const steps = [
@@ -107,7 +108,7 @@ function JourneyRunningTotal({
   );
 }
 
-export const JourneyScene = ({ active, reducedMotion, theme }: SceneComponentProps) => {
+export const JourneyScene = ({ active, reducedMotion, theme, onNavigate }: SceneComponentProps) => {
   const phaseMax = steps.length;
   const [phase, setPhase] = useState(0);
 
@@ -182,7 +183,7 @@ export const JourneyScene = ({ active, reducedMotion, theme }: SceneComponentPro
       </header>
 
       {/* Roadmap: only horizontal pan; vertical space from layout + short-height scaling (no vertical scroll region). */}
-      <div className="relative z-[2] mt-auto flex min-h-0 flex-1 flex-col justify-end">
+      <div className="relative z-[2] flex min-h-0 flex-1 flex-col justify-center">
         <div className="scrollbar-hide w-full overflow-x-auto overflow-y-visible pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-1 [-webkit-overflow-scrolling:touch] sm:pb-4 sm:pt-2" dir="ltr">
             <div className="journey-roadmap-row mx-auto flex min-w-max items-start justify-center px-3 pb-2 sm:px-8 lg:min-w-0 lg:w-full lg:max-w-6xl lg:px-10 xl:max-w-7xl">
             {steps.map((step, index) => {
@@ -390,6 +391,7 @@ export const JourneyScene = ({ active, reducedMotion, theme }: SceneComponentPro
             </div>
         </div>
       </div>
+      <PixelScrollArrows accent={theme.accent} active={active} reducedMotion={reducedMotion} onClick={() => onNavigate?.('level')} />
     </div>
   );
 };
