@@ -63,9 +63,9 @@ export const HeroScene = ({ active, reducedMotion, theme, onNavigate }: SceneCom
       className="relative flex h-full w-full flex-col overflow-hidden"
       dir="rtl"
     >
-      {/* ── Ticker strip ── */}
+      {/* ── Ticker strip — on mobile sits at top with menu overlaying it ── */}
       <div
-        className="relative z-10 shrink-0 overflow-hidden ticker-shimmer"
+        className="relative shrink-0 overflow-hidden ticker-shimmer"
         style={{
           height: '36px',
           background: `linear-gradient(90deg, rgba(2,14,28,0.92) 0%, ${theme.accent}44 50%, rgba(2,14,28,0.92) 100%)`,
@@ -87,12 +87,12 @@ export const HeroScene = ({ active, reducedMotion, theme, onNavigate }: SceneCom
       </div>
 
       {/* ── Main content row ── */}
-      <div className="relative flex flex-1 min-h-0 flex-col-reverse lg:flex-row">
+      <div className="relative z-0 flex flex-1 min-h-0 flex-col-reverse lg:flex-row">
 
         {/* ── TEXT COLUMN ── */}
         <div
           ref={parallaxTextRef}
-          className="relative z-10 flex flex-col justify-center gap-4 px-6 pt-8 pb-4 lg:w-[54%] lg:px-14 lg:pt-12 lg:pb-6"
+          className="relative z-10 flex flex-col justify-center gap-1 px-6 pt-1 pb-20 sm:gap-4 sm:pt-8 sm:pb-4 lg:w-[54%] lg:px-14 lg:pt-12 lg:pb-6"
           style={{ willChange: 'transform' }}
         >
           {/* New stronger slogan */}
@@ -108,7 +108,7 @@ export const HeroScene = ({ active, reducedMotion, theme, onNavigate }: SceneCom
               <KineticHeading text="تعلّم. قرّر." active={active} reducedMotion={reducedMotion} startDelayMs={180} />
             </span>
             <span
-              className={`mt-8 block text-[clamp(2.4rem,5.5vw,5rem)] ${active ? 'kinetic-rise' : 'opacity-0'}`}
+              className={`mt-1 block text-[clamp(2.4rem,5.5vw,5rem)] sm:mt-8 ${active ? 'kinetic-rise' : 'opacity-0'}`}
               style={{
                 color: theme.accent,
                 textShadow: `3px 3px 0 rgba(255,255,255,0.7), 4px 4px 0 rgba(0,0,0,0.18), 0 0 30px ${theme.glow}`,
@@ -156,9 +156,9 @@ export const HeroScene = ({ active, reducedMotion, theme, onNavigate }: SceneCom
             </div>
           </div>
 
-          {/* CTA buttons — only primary (removed "شاهد الفكرة") */}
+          {/* CTA buttons — hidden on mobile */}
           <div
-            className={`flex flex-wrap items-center gap-3 justify-end ${active ? 'kinetic-rise' : 'opacity-0'}`}
+            className={`hidden flex-wrap items-center gap-3 justify-end sm:flex ${active ? 'kinetic-rise' : 'opacity-0'}`}
             style={{ animationDelay: '960ms' }}
           >
             <button
@@ -183,7 +183,7 @@ export const HeroScene = ({ active, reducedMotion, theme, onNavigate }: SceneCom
 
         {/* ── HERO COLUMN ── */}
         <div
-          className="relative flex shrink-0 items-center justify-center lg:w-[46%] px-8 py-6 lg:px-12"
+          className="relative flex shrink-0 items-center justify-center lg:w-[46%] px-8 pt-4 pb-2 sm:pt-16 sm:pb-6 lg:px-12 lg:py-6"
           style={{ minHeight: '260px' }}
         >
           {!reducedMotion && (
