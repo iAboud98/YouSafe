@@ -31,11 +31,19 @@ const UI = {
   gold: '#f7c948',
 } as const;
 
+const isSafariBrowser = (): boolean => {
+  if (typeof navigator === 'undefined') return false;
+  const ua = navigator.userAgent;
+  return /Safari/.test(ua) && !/(Chrome|Chromium|CriOS|Edg|OPR)/.test(ua);
+};
+
 function MascotStage({ speaking }: { reducedMotion: boolean; speaking: boolean }) {
   const { accent, glow } = TALK_SCENE_THEME;
+  const isSafari = isSafariBrowser();
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
+    if (isSafari) return;
     const v = videoRef.current;
     if (!v) return;
     v.muted = true;
@@ -45,7 +53,7 @@ function MascotStage({ speaking }: { reducedMotion: boolean; speaking: boolean }
     } else {
       void v.play().catch(() => {});
     }
-  }, [speaking]);
+  }, [isSafari, speaking]);
 
   return (
     <div
@@ -67,26 +75,27 @@ function MascotStage({ speaking }: { reducedMotion: boolean; speaking: boolean }
         className="absolute inset-[12%] rounded-full border-4 border-dashed opacity-40 spin-slower-reverse"
         style={{ borderColor: accent }}
       />
-      <img
-        src="/mascot.png"
-        alt="بطل غزال يوسف"
-        className="absolute left-1/2 top-1/2 z-10 h-[86%] w-[86%] -translate-x-1/2 -translate-y-1/2 object-contain drop-shadow-[8px_12px_0_rgba(0,0,0,0.82)] float-medium"
-        draggable={false}
-        style={{ display: speaking ? 'none' : 'block' }}
-      />
-      <video
-        ref={videoRef}
-        className="absolute left-1/2 top-1/2 z-10 h-[86%] w-[86%] -translate-x-1/2 -translate-y-1/2 object-contain drop-shadow-[8px_12px_0_rgba(0,0,0,0.82)] float-medium"
-        loop
-        muted
-        playsInline
-        preload="auto"
-        aria-label="بطل غزال يوسف — فيديو"
-        style={{ display: speaking ? 'block' : 'none' }}
-      >
-        <source src="/Gazal_talking.webm" type="video/webm" />
-        <source src="/yzvyqz6qhnrmy0cy1qebwmqde0.mov" type="video/quicktime" />
-      </video>
+      {isSafari ? (
+        <img
+          src="/mascot.png"
+          alt="بطل غزال يوسف"
+          className="absolute left-1/2 top-1/2 z-10 h-[86%] w-[86%] -translate-x-1/2 -translate-y-1/2 object-contain drop-shadow-[8px_12px_0_rgba(0,0,0,0.82)] float-medium"
+          draggable={false}
+        />
+      ) : (
+        <video
+          ref={videoRef}
+          className="absolute left-1/2 top-1/2 z-10 h-[86%] w-[86%] -translate-x-1/2 -translate-y-1/2 object-contain drop-shadow-[8px_12px_0_rgba(0,0,0,0.82)] float-medium"
+          loop
+          muted
+          playsInline
+          preload="auto"
+          poster="/mascot.png"
+          aria-label="بطل غزال يوسف — فيديو"
+        >
+          <source src="/Gazal_talking.webm" type="video/webm" />
+        </video>
+      )}
     </div>
   );
 }
