@@ -146,10 +146,10 @@ export const AboutScene = ({ active, reducedMotion, theme, onNavigate }: SceneCo
         };
 
   return (
-    <div className="relative z-[1] mx-auto flex min-h-0 w-full max-w-[1500px] flex-1 flex-col gap-5 overflow-hidden px-4 pb-6 pt-4 sm:px-6 lg:flex-row lg:items-center lg:gap-8 lg:px-10">
+    <div className="relative z-[1] mx-auto flex min-h-0 w-full max-w-[1500px] flex-1 flex-col gap-3 overflow-hidden px-4 pb-16 pt-2 sm:gap-5 sm:px-6 sm:pb-6 sm:pt-4 lg:flex-row lg:items-center lg:gap-8 lg:px-10">
 
       {/* ── CRT character display + thumbnails ── */}
-      <div className="relative flex min-h-0 min-w-0 flex-1 items-center gap-5 lg:max-w-[60%]">
+      <div className="relative order-2 flex min-h-0 min-w-0 shrink-0 items-center gap-5 sm:order-1 sm:flex-1 lg:max-w-[60%]">
 
         {/* Thumbnails column — appears on the right in RTL */}
         <div className="hidden flex-col items-center gap-3 lg:flex lg:order-first">
@@ -227,7 +227,7 @@ export const AboutScene = ({ active, reducedMotion, theme, onNavigate }: SceneCo
 
               <div
                 ref={stageRef}
-                className="relative z-[3] px-5 pb-6 pt-6 sm:px-8 sm:pb-8 sm:pt-8"
+                className="relative z-[3] bg-[#0a0a0a] px-3 pb-3 pt-3 sm:bg-transparent sm:px-8 sm:pb-8 sm:pt-8"
                 onMouseMove={onStageMouseMove}
                 onMouseLeave={onStageMouseLeave}
                 onTouchStart={(e) => { touchStartX.current = e.touches[0]?.clientX ?? null; }}
@@ -240,7 +240,7 @@ export const AboutScene = ({ active, reducedMotion, theme, onNavigate }: SceneCo
                   else if (dx < -SWIPE_PX) go(1);
                 }}
               >
-                <div style={{ ...tiltStyle, aspectRatio: '666 / 375' }} className="mx-auto flex w-full max-w-[min(100%,640px)] items-center justify-center will-change-transform" >
+                <div style={{ ...tiltStyle, aspectRatio: '666 / 375' }} className="mx-auto flex w-full max-w-[min(100%,280px)] items-center justify-center will-change-transform sm:max-w-[min(100%,640px)]" >
                   <img
                     key={current.id}
                     src={current.src}
@@ -253,8 +253,8 @@ export const AboutScene = ({ active, reducedMotion, theme, onNavigate }: SceneCo
                 </div>
               </div>
 
-              {/* CRT footer LEDs */}
-              <div className="relative z-[4] flex justify-center gap-2 border-t border-[#202544]/10 bg-white/18 px-3 py-2.5 backdrop-blur-sm">
+              {/* CRT footer LEDs — hidden on mobile */}
+              <div className="relative z-[4] hidden justify-center gap-2 border-t border-[#202544]/10 bg-white/18 px-3 py-2.5 backdrop-blur-sm sm:flex">
                 {characters.map((c, i) => (
                   <button
                     key={c.id}
@@ -277,8 +277,8 @@ export const AboutScene = ({ active, reducedMotion, theme, onNavigate }: SceneCo
 
       </div>
 
-      {/* ── Right: merged character info + stats card ── */}
-      <div className="flex w-full min-w-0 flex-col justify-center gap-5 lg:w-[min(100%,30rem)] lg:flex-none">
+      {/* ── Right: merged character info + stats card (shown first on mobile) ── */}
+      <div className="order-1 flex w-full min-w-0 flex-col justify-center gap-3 sm:order-2 sm:gap-5 lg:w-[min(100%,30rem)] lg:flex-none">
         <header className="text-right">
           <div
             className={`inline-flex items-center border-2 border-[#202544] px-3 py-1.5 font-cartoon text-[11px] font-extrabold text-[#202544] shadow-[3px_3px_0_${NEON_BLUE}] ${active ? 'kinetic-fade' : 'opacity-0'}`}
@@ -309,11 +309,11 @@ export const AboutScene = ({ active, reducedMotion, theme, onNavigate }: SceneCo
         >
           {/* Character name bar */}
           <div
-            className="px-5 py-4 border-b"
+            className="px-4 py-2.5 border-b sm:px-5 sm:py-4"
             style={{ borderColor: `${NEON_BLUE}22`, background: `${NEON_BLUE}08` }}
           >
             <div className="flex flex-wrap items-baseline justify-end gap-3">
-              <h3 className="font-display text-4xl font-bold sm:text-5xl" style={{ color: '#f0f8ff' }}>{current.nameAr}</h3>
+              <h3 className="font-display text-2xl font-bold sm:text-5xl" style={{ color: '#f0f8ff' }}>{current.nameAr}</h3>
               <span className="font-pixel text-[6px] tracking-widest" style={{ color: '#ffffff', opacity: 0.9 }} lang="en">
                 {current.nameEn}
               </span>
@@ -323,14 +323,14 @@ export const AboutScene = ({ active, reducedMotion, theme, onNavigate }: SceneCo
           </div>
 
           {/* Stats section */}
-          <div className="px-5 py-4">
+          <div className="px-4 py-2.5 sm:px-5 sm:py-4">
             <div className="mb-3 flex flex-col items-end gap-1 pb-2 text-right">
               <span className="font-cartoon text-sm font-extrabold" style={{ color: '#ffffff' }}>سمات الشخصية</span>
               <span className="max-w-[18rem] text-right font-cartoon text-xs font-bold leading-snug" style={{ color: '#ffffff' }}>
                 {current.perk}
               </span>
             </div>
-            <div className="space-y-3">
+            <div className="space-y-2 sm:space-y-3">
               {current.stats.map((s) => (
                 <div key={s.key}>
                   <div className="mb-1 flex justify-between font-cartoon text-sm font-bold">
