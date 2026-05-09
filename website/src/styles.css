@@ -1196,15 +1196,19 @@
   }
 
   .final-cta-body {
-    grid-template-rows: auto minmax(0, auto);
-    align-content: start;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
     gap: clamp(0.15rem, 0.7dvh, 0.45rem);
   }
 
   .final-cta-art {
     align-items: flex-start;
     padding-bottom: 0;
-    transform: translateY(-0.55rem);
+    order: 2;
+    width: 100%;
+    transform: none;
   }
 
   .final-cta-art > .pointer-events-none {
@@ -1213,15 +1217,13 @@
   }
 
   .final-cta-phone {
-    max-width: min(72vw, 17rem);
-    max-height: min(30dvh, 15.5rem);
+    max-width: min(58vw, 14rem);
+    max-height: min(24dvh, 12.5rem);
     filter: drop-shadow(0 0 22px rgba(191, 95, 255, 0.42)) !important;
   }
 
   .final-cta-copy {
-    justify-content: flex-start;
-    padding-inline: 0;
-    transform: translateY(-0.75rem);
+    display: contents;
   }
 
   .final-cta-coin {
@@ -1229,6 +1231,7 @@
   }
 
   .final-cta-heading {
+    order: 1;
     max-width: 11ch;
     font-size: clamp(2.05rem, 11vw, 2.85rem) !important;
     line-height: 0.98;
@@ -1239,13 +1242,15 @@
   }
 
   .final-cta-description {
+    order: 3;
     max-width: min(100%, 24rem);
-    margin-top: 0.7rem;
+    margin-top: 0.35rem;
     font-size: clamp(0.96rem, 4.15vw, 1.08rem);
     line-height: 1.65;
   }
 
   .final-cta-actions {
+    order: 4;
     flex-wrap: nowrap;
     gap: 0.65rem;
     width: min(100%, 23rem);
@@ -1329,16 +1334,12 @@
   }
 
   .final-cta-art {
-    transform: translateY(-0.8rem);
+    transform: none;
   }
 
   .final-cta-phone {
-    max-width: min(64vw, 14.5rem);
-    max-height: min(26dvh, 12rem);
-  }
-
-  .final-cta-copy {
-    transform: translateY(-1.05rem);
+    max-width: min(50vw, 11.5rem);
+    max-height: min(20dvh, 9rem);
   }
 
   .final-cta-heading {
