@@ -1,11 +1,9 @@
-from typing import Optional
-
 from pydantic import BaseModel, Field, field_validator
 
 _ALLOWED_ROLES = {"user", "assistant"}
 
 
-class TalkMessage(BaseModel):
+class GameChatMessage(BaseModel):
     role: str
     content: str = Field(min_length=1, max_length=1000)
 
@@ -17,19 +15,15 @@ class TalkMessage(BaseModel):
         return v
 
 
-class LevelContext(BaseModel):
-    level_title: Optional[str] = Field(default="", max_length=160)
-    situation_type: Optional[str] = Field(default="", max_length=120)
-    level_description: Optional[str] = Field(default="", max_length=1500)
-
-
-class TextTalkRequest(BaseModel):
+class PlayerChatRequest(BaseModel):
     session_id: str = Field(min_length=1, max_length=120)
     player_name: str = Field(min_length=1, max_length=80)
+    room_id: str = Field(min_length=1, max_length=120)
+    room_title: str = Field(min_length=1, max_length=160)
+    room_description: str = Field(min_length=1, max_length=1500)
+    situation_type: str = Field(min_length=1, max_length=120)
     message: str = Field(min_length=1, max_length=1000)
-    history: list[TalkMessage] = Field(default_factory=list, max_length=20)
-    level_context: Optional[LevelContext] = None
-    tts_enabled: bool = True
+    history: list[GameChatMessage] = Field(default_factory=list, max_length=20)
 
     @field_validator("message")
     @classmethod
@@ -39,19 +33,10 @@ class TextTalkRequest(BaseModel):
         return v
 
 
-class TextTalkResponse(BaseModel):
+class PlayerChatResponse(BaseModel):
     session_id: str
+    room_id: str
     player_message: str
     assistant_text: str
-    audio_base64: str
-    history: list[TalkMessage]
-    status: str
-
-
-class VoiceTalkResponse(BaseModel):
-    session_id: str
-    transcript: str
-    assistant_text: str
-    audio_base64: str
-    history: list[TalkMessage]
+    history: list[GameChatMessage]
     status: str
