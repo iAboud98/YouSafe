@@ -253,8 +253,8 @@ export const AboutScene = ({ active, reducedMotion, theme, onNavigate }: SceneCo
                 </div>
               </div>
 
-              {/* CRT footer LEDs — hidden on mobile */}
-              <div className="relative z-[4] hidden justify-center gap-2 border-t border-[#202544]/10 bg-white/18 px-3 py-2.5 backdrop-blur-sm sm:flex">
+              {/* CRT footer LEDs */}
+              <div className="relative z-[4] flex justify-center gap-1.5 border-t border-[#202544]/10 bg-white/18 px-3 py-1.5 backdrop-blur-sm sm:gap-2 sm:py-2.5">
                 {characters.map((c, i) => (
                   <button
                     key={c.id}
