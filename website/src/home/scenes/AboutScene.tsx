@@ -227,7 +227,7 @@ export const AboutScene = ({ active, reducedMotion, theme, onNavigate }: SceneCo
 
               <div
                 ref={stageRef}
-                className="relative z-[3] bg-[#0a0a0a] px-3 pb-3 pt-3 sm:bg-transparent sm:px-8 sm:pb-8 sm:pt-8"
+                className="relative z-[3] px-3 pb-3 pt-3 sm:px-8 sm:pb-8 sm:pt-8"
                 onMouseMove={onStageMouseMove}
                 onMouseLeave={onStageMouseLeave}
                 onTouchStart={(e) => { touchStartX.current = e.touches[0]?.clientX ?? null; }}
