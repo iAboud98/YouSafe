@@ -40,7 +40,7 @@ const isSafariBrowser = (): boolean => {
 function MascotStage({ reducedMotion, speaking }: { reducedMotion: boolean; speaking: boolean }) {
   const { accent, glow } = TALK_SCENE_THEME;
   const safariFallback = isSafariBrowser();
-  const shouldUseVideo = !reducedMotion && !safariFallback;
+  const shouldUseVideo = !safariFallback;
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
@@ -95,8 +95,8 @@ function MascotStage({ reducedMotion, speaking }: { reducedMotion: boolean; spea
         </video>
       ) : (
         <img
-          src="/mascot.png"
-          alt="بطل غزال يوسف"
+          src="/Gazal_talking.apng"
+          alt="بطل غزال يوسف — متحرك"
           className="absolute left-1/2 top-1/2 z-10 h-[86%] w-[86%] -translate-x-1/2 -translate-y-1/2 object-contain drop-shadow-[8px_12px_0_rgba(0,0,0,0.82)] float-medium"
           draggable={false}
         />
