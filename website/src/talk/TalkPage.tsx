@@ -313,7 +313,7 @@ export const TalkPage = ({ onBack }: TalkPageProps) => {
   return (
     <main dir="rtl" className="relative flex h-full max-h-full min-h-0 flex-1 flex-col overflow-hidden" style={{ color: UI.text }}>
       <div className="pointer-events-none absolute inset-0 z-0">
-        <CinematicBackdrop theme={TALK_SCENE_THEME} reducedMotion={reducedMotion} showWallpaper={false} />
+        <CinematicBackdrop theme={TALK_SCENE_THEME} reducedMotion={reducedMotion} showWallpaper />
       </div>
 
       <header className="relative z-30 px-4 pt-3 sm:px-8">
