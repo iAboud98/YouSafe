@@ -4,7 +4,7 @@ import { CinematicBackdrop } from '../home/components/CinematicBackdrop';
 import { useReducedMotion } from '../home/hooks/useReducedMotion';
 import type { SceneTheme } from '../home/types';
 import { talkText, talkVoice, type TalkMessage } from './api';
-import { MicRecorder, playBase64Audio } from './audio';
+import { MicRecorder, playBase64Audio, unlockAudioContext } from './audio';
 
 type TalkPageProps = {
   onBack: () => void;
@@ -211,6 +211,7 @@ export const TalkPage = ({ onBack }: TalkPageProps) => {
   // ---- Text send ----
   const handleSend = async (e: React.FormEvent) => {
     e.preventDefault();
+    unlockAudioContext();
     const message = input.trim();
     if (!message || busy) return;
     setBusy(true);
@@ -238,6 +239,7 @@ export const TalkPage = ({ onBack }: TalkPageProps) => {
 
   // ---- Voice: start recording ----
   const startRecording = async () => {
+    unlockAudioContext();
     setMode('voice');
     setVoiceState('recording');
     setBusy(true);

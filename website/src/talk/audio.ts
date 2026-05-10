@@ -9,6 +9,35 @@ const b64ToBytes = (b64: string): Uint8Array => {
   return out;
 };
 
+// Shared AudioContext — iOS/iPadOS requires it to be resumed inside a user gesture.
+// We create it lazily on the first user interaction so the resume() call is trusted.
+const Ctx =
+  window.AudioContext ||
+  (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+let sharedAudioCtx: AudioContext | null = null;
+
+const getAudioContext = (): AudioContext => {
+  if (!sharedAudioCtx || sharedAudioCtx.state === 'closed') {
+    sharedAudioCtx = new Ctx();
+  }
+  return sharedAudioCtx;
+};
+
+// Call this once from a user-gesture handler (e.g. "Send" button tap or mic button tap)
+// to unlock audio playback on iOS/iPadOS.
+export const unlockAudioContext = (): void => {
+  const ac = getAudioContext();
+  if (ac.state === 'suspended') {
+    void ac.resume();
+  }
+  // iOS also needs a silent buffer played during a gesture to fully unlock
+  const silent = ac.createBuffer(1, 1, ac.sampleRate);
+  const src = ac.createBufferSource();
+  src.buffer = silent;
+  src.connect(ac.destination);
+  src.start();
+};
+
 export type PlaybackCallbacks = {
   onStart?: () => void;
   onEnd?: () => void;
@@ -20,8 +49,7 @@ export const playBase64Audio = async (
 ): Promise<void> => {
   if (!audioBase64) return;
   const bytes = b64ToBytes(audioBase64);
-  const Ctx = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
-  const ac = new Ctx();
+  const ac = getAudioContext();
   if (ac.state === 'suspended') await ac.resume();
 
   const ab = new ArrayBuffer(bytes.length);
@@ -31,7 +59,6 @@ export const playBase64Audio = async (
     callbacks?.onStart?.();
     src.onended = () => {
       callbacks?.onEnd?.();
-      void ac.close();
     };
     src.connect(ac.destination);
     src.start();
