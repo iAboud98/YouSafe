@@ -37,6 +37,12 @@ const isSafariBrowser = (): boolean => {
   return /Safari/.test(ua) && !/(Chrome|Chromium|CriOS|Edg|OPR)/.test(ua);
 };
 
+const isIOSDevice = (): boolean => {
+  if (typeof navigator === 'undefined') return false;
+  return /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+};
+
 function MascotStage({ speaking }: { reducedMotion: boolean; speaking: boolean }) {
   const { accent, glow } = TALK_SCENE_THEME;
   const isSafari = isSafariBrowser();
@@ -387,7 +393,7 @@ export const TalkPage = ({ onBack }: TalkPageProps) => {
       <div className="relative z-20 mx-auto flex min-h-0 w-full max-w-lg flex-1 flex-col px-4 pb-6 pt-3 sm:max-w-xl sm:px-6 sm:pb-8 sm:pt-4">
         <div className="flex min-h-0 flex-1 flex-col items-center justify-center gap-2 sm:gap-3">
           <div className="kinetic-rise w-full shrink-0" style={{ animationDelay: '80ms' }}>
-            <MascotStage reducedMotion={reducedMotion} speaking={speaking} />
+            <MascotStage reducedMotion={reducedMotion} speaking={isIOSDevice() ? false : speaking} />
           </div>
           <p
             dir="rtl"
