@@ -31,35 +31,8 @@ const UI = {
   gold: '#f7c948',
 } as const;
 
-const isSafariBrowser = (): boolean => {
-  if (typeof navigator === 'undefined') return false;
-  const ua = navigator.userAgent;
-  return /Safari/.test(ua) && !/(Chrome|Chromium|CriOS|Edg|OPR)/.test(ua);
-};
-
-const isIOSDevice = (): boolean => {
-  if (typeof navigator === 'undefined') return false;
-  return /iPad|iPhone|iPod/.test(navigator.userAgent) ||
-    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-};
-
-function MascotStage({ speaking }: { reducedMotion: boolean; speaking: boolean }) {
+function MascotStage({ reducedMotion }: { reducedMotion: boolean }) {
   const { accent, glow } = TALK_SCENE_THEME;
-  const isSafari = isSafariBrowser();
-  const videoRef = useRef<HTMLVideoElement>(null);
-
-  useEffect(() => {
-    if (isSafari) return;
-    const v = videoRef.current;
-    if (!v) return;
-    v.muted = true;
-    if (!speaking) {
-      v.pause();
-      v.currentTime = 0;
-    } else {
-      void v.play().catch(() => {});
-    }
-  }, [isSafari, speaking]);
 
   return (
     <div
@@ -74,34 +47,19 @@ function MascotStage({ speaking }: { reducedMotion: boolean; speaking: boolean }
         }}
       />
       <div
-        className="absolute inset-[10%] rounded-full opacity-50 comic-radial-burst spin-slow"
+        className={`absolute inset-[10%] rounded-full opacity-50 comic-radial-burst ${reducedMotion ? '' : 'spin-slow'}`}
         style={{ filter: 'blur(0.5px)' }}
       />
       <div
-        className="absolute inset-[12%] rounded-full border-4 border-dashed opacity-40 spin-slower-reverse"
+        className={`absolute inset-[12%] rounded-full border-4 border-dashed opacity-40 ${reducedMotion ? '' : 'spin-slower-reverse'}`}
         style={{ borderColor: accent }}
       />
-      {isSafari ? (
-        <img
-          src="/mascot.png"
-          alt="بطل غزال يوسف"
-          className="absolute left-1/2 top-1/2 z-10 h-[86%] w-[86%] -translate-x-1/2 -translate-y-1/2 object-contain drop-shadow-[8px_12px_0_rgba(0,0,0,0.82)] float-medium"
-          draggable={false}
-        />
-      ) : (
-        <video
-          ref={videoRef}
-          className="absolute left-1/2 top-1/2 z-10 h-[86%] w-[86%] -translate-x-1/2 -translate-y-1/2 object-contain drop-shadow-[8px_12px_0_rgba(0,0,0,0.82)] float-medium"
-          loop
-          muted
-          playsInline
-          preload="auto"
-          poster="/mascot.png"
-          aria-label="بطل غزال يوسف — فيديو"
-        >
-          <source src="/Gazal_talking.webm" type="video/webm" />
-        </video>
-      )}
+      <img
+        src="/mascot.png"
+        alt="بطل غزال يوسف"
+        className={`absolute left-1/2 top-1/2 z-10 h-[86%] w-[86%] -translate-x-1/2 -translate-y-1/2 object-contain drop-shadow-[8px_12px_0_rgba(0,0,0,0.82)] ${reducedMotion ? '' : 'float-medium'}`}
+        draggable={false}
+      />
     </div>
   );
 }
@@ -201,14 +159,9 @@ export const TalkPage = ({ onBack }: TalkPageProps) => {
   const [mode, setMode] = useState<Mode>('text');
   const [responseText, setResponseText] = useState(DEFAULT_RESPONSE);
   const [busy, setBusy] = useState(false);
-  const [speaking, setSpeaking] = useState(false);
   const [voiceState, setVoiceState] = useState<VoiceState>('idle');
   const { accent, glow } = TALK_SCENE_THEME;
 
-  const audioCallbacks = {
-    onStart: () => setSpeaking(true),
-    onEnd: () => setSpeaking(false),
-  };
 
   const sessionIdRef = useRef<string>(newSessionId());
   const historyRef = useRef<TalkMessage[]>([]);
@@ -233,7 +186,7 @@ export const TalkPage = ({ onBack }: TalkPageProps) => {
       historyRef.current = res.history;
       setResponseText(res.assistant_text);
       if (res.audio_base64) {
-        playBase64Audio(res.audio_base64, audioCallbacks).catch(() => {});
+        playBase64Audio(res.audio_base64).catch(() => {});
       }
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);
@@ -302,7 +255,7 @@ export const TalkPage = ({ onBack }: TalkPageProps) => {
       historyRef.current = res.history;
       setResponseText(res.assistant_text);
       if (res.audio_base64) {
-        playBase64Audio(res.audio_base64, audioCallbacks).catch(() => {});
+        playBase64Audio(res.audio_base64).catch(() => {});
       }
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);
@@ -393,7 +346,7 @@ export const TalkPage = ({ onBack }: TalkPageProps) => {
       <div className="relative z-20 mx-auto flex min-h-0 w-full max-w-lg flex-1 flex-col px-4 pb-6 pt-3 sm:max-w-xl sm:px-6 sm:pb-8 sm:pt-4">
         <div className="flex min-h-0 flex-1 flex-col items-center justify-center gap-2 sm:gap-3">
           <div className="kinetic-rise w-full shrink-0" style={{ animationDelay: '80ms' }}>
-            <MascotStage reducedMotion={reducedMotion} speaking={isIOSDevice() ? false : speaking} />
+            <MascotStage reducedMotion={reducedMotion} />
           </div>
           <p
             dir="rtl"
