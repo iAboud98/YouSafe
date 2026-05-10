@@ -9,33 +9,30 @@ const b64ToBytes = (b64: string): Uint8Array => {
   return out;
 };
 
-// Shared AudioContext — iOS/iPadOS requires it to be resumed inside a user gesture.
-// We create it lazily on the first user interaction so the resume() call is trusted.
-const Ctx =
-  window.AudioContext ||
-  (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
-let sharedAudioCtx: AudioContext | null = null;
+// We keep a hidden <audio> element that gets "unlocked" on user gesture (tap).
+// This is the most reliable way to play audio on iOS/Android/iPad.
+let audioEl: HTMLAudioElement | null = null;
 
-const getAudioContext = (): AudioContext => {
-  if (!sharedAudioCtx || sharedAudioCtx.state === 'closed') {
-    sharedAudioCtx = new Ctx();
+const getAudioEl = (): HTMLAudioElement => {
+  if (!audioEl) {
+    audioEl = new Audio();
+    (audioEl as unknown as Record<string, unknown>).playsInline = true;
+    audioEl.setAttribute('playsinline', '');
+    audioEl.setAttribute('webkit-playsinline', '');
   }
-  return sharedAudioCtx;
+  return audioEl;
 };
 
-// Call this once from a user-gesture handler (e.g. "Send" button tap or mic button tap)
-// to unlock audio playback on iOS/iPadOS.
+// Call from a user-gesture handler (tap/click) to unlock audio on iOS/Android.
 export const unlockAudioContext = (): void => {
-  const ac = getAudioContext();
-  if (ac.state === 'suspended') {
-    void ac.resume();
-  }
-  // iOS also needs a silent buffer played during a gesture to fully unlock
-  const silent = ac.createBuffer(1, 1, ac.sampleRate);
-  const src = ac.createBufferSource();
-  src.buffer = silent;
-  src.connect(ac.destination);
-  src.start();
+  const el = getAudioEl();
+  // Playing an empty src or a tiny silent data URI unlocks the element on iOS
+  el.src = 'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA=';
+  el.volume = 0;
+  void el.play().then(() => {
+    el.pause();
+    el.volume = 1;
+  }).catch(() => {});
 };
 
 export type PlaybackCallbacks = {
@@ -48,8 +45,52 @@ export const playBase64Audio = async (
   callbacks?: PlaybackCallbacks,
 ): Promise<void> => {
   if (!audioBase64) return;
+
   const bytes = b64ToBytes(audioBase64);
-  const ac = getAudioContext();
+  const blob = new Blob([bytes as unknown as BlobPart], { type: 'audio/mp3' });
+  const url = URL.createObjectURL(blob);
+  const el = getAudioEl();
+
+  return new Promise<void>((resolve) => {
+    el.src = url;
+    el.volume = 1;
+
+    const cleanup = () => {
+      el.onended = null;
+      el.onerror = null;
+      URL.revokeObjectURL(url);
+      resolve();
+    };
+
+    el.onended = () => {
+      callbacks?.onEnd?.();
+      cleanup();
+    };
+
+    el.onerror = () => {
+      // Fallback: try Web Audio API for raw PCM
+      cleanup();
+      playWithWebAudio(bytes, callbacks).catch(() => {});
+    };
+
+    callbacks?.onStart?.();
+    void el.play().catch(() => {
+      // If <audio> play fails, fall back to Web Audio API
+      cleanup();
+      playWithWebAudio(bytes, callbacks).catch(() => {});
+    });
+  });
+};
+
+// Fallback for raw PCM data that <audio> can't decode
+const playWithWebAudio = async (
+  bytes: Uint8Array,
+  callbacks?: PlaybackCallbacks,
+): Promise<void> => {
+  const Ctx =
+    window.AudioContext ||
+    (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+  const ac = new Ctx();
   if (ac.state === 'suspended') await ac.resume();
 
   const ab = new ArrayBuffer(bytes.length);
@@ -59,6 +100,7 @@ export const playBase64Audio = async (
     callbacks?.onStart?.();
     src.onended = () => {
       callbacks?.onEnd?.();
+      void ac.close();
     };
     src.connect(ac.destination);
     src.start();
@@ -69,7 +111,6 @@ export const playBase64Audio = async (
     const src = ac.createBufferSource();
     src.buffer = buffer;
     play(src);
-    return;
   } catch {
     const sampleRate = 24000;
     const samples = Math.floor(bytes.length / 2);
