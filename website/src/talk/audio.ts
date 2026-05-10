@@ -35,6 +35,33 @@ export const unlockAudioContext = (): void => {
   }).catch(() => {});
 };
 
+// Wraps raw 16-bit PCM bytes into a valid WAV so <audio> can play it.
+const pcmToWavBlob = (pcm: Uint8Array, sampleRate = 24000): Blob => {
+  const header = new ArrayBuffer(44);
+  const v = new DataView(header);
+  const writeStr = (off: number, s: string) => {
+    for (let i = 0; i < s.length; i++) v.setUint8(off + i, s.charCodeAt(i));
+  };
+  const dataLen = pcm.length;
+  writeStr(0, 'RIFF');
+  v.setUint32(4, 36 + dataLen, true);
+  writeStr(8, 'WAVE');
+  writeStr(12, 'fmt ');
+  v.setUint32(16, 16, true);
+  v.setUint16(20, 1, true); // PCM
+  v.setUint16(22, 1, true); // mono
+  v.setUint32(24, sampleRate, true);
+  v.setUint32(28, sampleRate * 2, true); // byte rate
+  v.setUint16(32, 2, true); // block align
+  v.setUint16(34, 16, true); // bits per sample
+  writeStr(36, 'data');
+  v.setUint32(40, dataLen, true);
+  return new Blob(
+    [new Uint8Array(header) as unknown as BlobPart, pcm as unknown as BlobPart],
+    { type: 'audio/wav' },
+  );
+};
+
 export type PlaybackCallbacks = {
   onStart?: () => void;
   onEnd?: () => void;
@@ -46,8 +73,9 @@ export const playBase64Audio = async (
 ): Promise<void> => {
   if (!audioBase64) return;
 
-  const bytes = b64ToBytes(audioBase64);
-  const blob = new Blob([bytes as unknown as BlobPart], { type: 'audio/mp3' });
+  const pcmBytes = b64ToBytes(audioBase64);
+  // Wrap raw PCM in a WAV header so the <audio> element can decode it
+  const blob = pcmToWavBlob(pcmBytes, 24000);
   const url = URL.createObjectURL(blob);
   const el = getAudioEl();
 
@@ -68,63 +96,14 @@ export const playBase64Audio = async (
     };
 
     el.onerror = () => {
-      // Fallback: try Web Audio API for raw PCM
       cleanup();
-      playWithWebAudio(bytes, callbacks).catch(() => {});
     };
 
     callbacks?.onStart?.();
     void el.play().catch(() => {
-      // If <audio> play fails, fall back to Web Audio API
       cleanup();
-      playWithWebAudio(bytes, callbacks).catch(() => {});
     });
   });
-};
-
-// Fallback for raw PCM data that <audio> can't decode
-const playWithWebAudio = async (
-  bytes: Uint8Array,
-  callbacks?: PlaybackCallbacks,
-): Promise<void> => {
-  const Ctx =
-    window.AudioContext ||
-    (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
-  const ac = new Ctx();
-  if (ac.state === 'suspended') await ac.resume();
-
-  const ab = new ArrayBuffer(bytes.length);
-  new Uint8Array(ab).set(bytes);
-
-  const play = (src: AudioBufferSourceNode) => {
-    callbacks?.onStart?.();
-    src.onended = () => {
-      callbacks?.onEnd?.();
-      void ac.close();
-    };
-    src.connect(ac.destination);
-    src.start();
-  };
-
-  try {
-    const buffer = await ac.decodeAudioData(ab.slice(0));
-    const src = ac.createBufferSource();
-    src.buffer = buffer;
-    play(src);
-  } catch {
-    const sampleRate = 24000;
-    const samples = Math.floor(bytes.length / 2);
-    if (samples === 0) return;
-    const buffer = ac.createBuffer(1, samples, sampleRate);
-    const channel = buffer.getChannelData(0);
-    const view = new DataView(ab);
-    for (let i = 0; i < samples; i++) {
-      channel[i] = view.getInt16(i * 2, true) / 0x8000;
-    }
-    const src = ac.createBufferSource();
-    src.buffer = buffer;
-    play(src);
-  }
 };
 
 // ---- Mic recording ----
